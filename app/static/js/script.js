@@ -72,7 +72,7 @@ function validarLogin() {
             senha: senha.value,
         }
 
-        fetch('/login', {
+        /* fetch('/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -91,7 +91,7 @@ function validarLogin() {
             .catch(error => {
                 console.error('Erro:', error);
                 alert('Erro ao fazer login conta!');
-            });
+            }); */
     }
 }
 
@@ -190,7 +190,7 @@ function validarCadastro() {
             whatsapp: whatsapp.value
         }
 
-        fetch('/usuarios', {
+        /* fetch('/usuarios', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dadosCadastro)
@@ -202,7 +202,7 @@ function validarCadastro() {
                 } else {
                     erroCadastro.innerHTML = dados.mensagem
                 }
-            })
+            }) */
     }
 }
 
@@ -442,7 +442,7 @@ Barbearia Morais - Excelência em Cortes`
         return
     } else {
         window.open(`https://wa.me/5561998729994?text=${mensagemCodificada}`, '_blank')
-        fetch('/agendamentos', {
+        /* fetch('/agendamentos', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -457,7 +457,7 @@ Barbearia Morais - Excelência em Cortes`
             .catch(error => {
                 console.error('Erro:', error);
                 alert('Erro ao salvar agendamento!');
-            });
+            }); */
     }
 })
 
