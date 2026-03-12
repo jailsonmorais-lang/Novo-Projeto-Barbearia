@@ -3,6 +3,7 @@ from flask import Flask
 def create_app():
     # Aqui o Flask entende que deev olhar para dentro da pasta 'app'
     app = Flask(__name__,
+                instance_relative_config=True,
                 template_folder='templates',
                 static_folder='static'
                 )
