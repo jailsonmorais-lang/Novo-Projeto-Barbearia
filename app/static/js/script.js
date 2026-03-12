@@ -32,13 +32,15 @@ function configurarBotaoMostrarSenha(botaoSeletor, inputSeletor, imgSeletor) {
     const input = document.querySelector(inputSeletor)
     const imagem = document.querySelector(imgSeletor)
 
+    if (!botao || !input || !imagem) return;
+
     botao.addEventListener('click', () => {
         if (input.type === 'password') {
             input.type = 'text'
-            imagem.src = '/app/static/assets/olho-aberto.svg'
+            imagem.src = '/static/assets/olho-aberto.svg'
         } else {
             input.type = 'password'
-            imagem.src = '/app/static/assets/olho-fechado.svg'
+            imagem.src = '/static/assets/olho-fechado.svg'
         }
     })
 }
@@ -82,7 +84,6 @@ function validarLogin() {
                 if (data.Erro) {
                     alert(data.Erro)
                 } else {
-                    mudarTela('tela-dashboard')
                     alert('Login realizado com sucesso!');
                     console.log('Resposta do Backend:', data);
                 }
@@ -117,7 +118,6 @@ document.querySelector('button#btn-login').addEventListener('click', (evento) =>
 
 document.querySelector('#tela-login a[href="#cadastre-se"]').addEventListener('click', (evento) => {
     evento.preventDefault()
-    mudarTela('tela-criar-conta')
     limparCadastro()
 })
 
@@ -203,40 +203,12 @@ function validarCadastro() {
                     erroCadastro.innerHTML = dados.mensagem
                 }
             })
-
-        mudarTela('tela-login')
     }
 }
 
 document.querySelector('button#btn-cadastrar').addEventListener('click', (evento) => {
     evento.preventDefault()
     validarCadastro()
-})
-
-/* ====== FUNÇÕES DE NAVEGAÇÃO ====== */
-//Responsáveis por mddar entre telas
-// Removem a classe "ativa" de todas as telas
-// Adiciona "ativa" apenas na tela desejada
-
-function mudarTela(idTela) {
-    const todasTelas = document.querySelectorAll('.tela')
-    todasTelas.forEach((tela) => {
-        tela.classList.remove('ativa')
-    })
-
-    const telaSelecionada = document.getElementById(idTela)
-    telaSelecionada.classList.add('ativa')
-}
-
-document.querySelector('#tela-criar-conta a[href="#login"]').addEventListener('click', (evento) => {
-    evento.preventDefault()
-    mudarTela('tela-login')
-})
-
-document.querySelector('#tela-login a[href="#esqueci-a-senha"]').addEventListener('click', (evento) => {
-    evento.preventDefault()
-    limparCadastro()
-    mudarTela("tela-recuperar-senha")
 })
 
 document.querySelector('button#btn-verificar-codigo').addEventListener('click', (evento) => {
@@ -253,11 +225,6 @@ document.querySelector('#tela-recuperar-senha a[href="#enviarcodigo"]').addEvent
 document.querySelector('button#redefinir-senha').addEventListener('click', (evento) => {
     evento.preventDefault()
     criarNovaSenha()
-})
-
-document.querySelector('button#btn-voltar-dashboard').addEventListener('click', (evento) => {
-    evento.preventDefault()
-    mudarTela('tela-dashboard')
 })
 
 /* ====== RECUPERAÇÃO DE SENHA ====== */
@@ -297,7 +264,7 @@ function recuperarSenha() {
         erroRecuperaSenha.innerHTML = 'Código INCORRETO'
         erroRecuperaSenha.style.textShadow = erro
     } else {
-        mudarTela('tela-criar-nova-senha')
+
     }
 }
 
@@ -312,7 +279,7 @@ function criarNovaSenha() {
         erroCriarNovaSenha.innerHTML = 'As senhas não coincidem!'
         erroCriarNovaSenha.style.textShadow = erro
     } else {
-        mudarTela('tela-login')
+
     }
 }
 
@@ -400,8 +367,6 @@ botoesCorte.forEach((botao) => {
         document.getElementById('corte-preco').textContent = dadosCorte.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
         document.getElementById('corte-tempo').textContent = dadosCorte.tempo
         document.getElementById('corte-imagem').src = dadosCorte.imagem
-
-        mudarTela('tela-agendamento')
     })
 })
 

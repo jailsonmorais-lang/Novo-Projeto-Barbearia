@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barbershop</title>
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/favicon/tesoura.ico') }}v=1">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/favicon/tesoura.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -14,7 +14,7 @@
 <body>
     <main>
         <!-- TELA 1: LOGIN -->
-        <div id="tela-login" class="tela ativa">
+        <div id="tela-login">
             <div class="container">
                 <div class="logo">
                     <img src= "{{ url_for('static', filename='assets/logo.inicial.webp') }}" alt="logo" loading="lazy">
@@ -60,7 +60,7 @@
 
         <!-- TELA 2:FAÇA SEU CADASTRO  -->
 
-        <div id="tela-criar-conta" class="tela">
+        <div id="tela-criar-conta">
             <div class="container">
                 <div class="logo">
                     <img src= "{{ url_for('static', filename='assets/logo.inicial.webp') }}" alt="logo" loading="lazy">
@@ -125,7 +125,7 @@
 
         <!-- TELA 3: RECUPERAÇÃO DE SENHA -->
 
-        <div id="tela-recuperar-senha" class="tela">
+        <div id="tela-recuperar-senha">
             <div class="container">
                 <section>
                     <div class="div-section">
@@ -164,7 +164,7 @@
 
         <!-- TELA 4: CRIAR NOVA SENHA -->
 
-        <div id="tela-criar-nova-senha" class="tela">
+        <div id="tela-criar-nova-senha">
             <div class="container">
                 <section>
                     <div class="div-section">
@@ -204,7 +204,7 @@
 
         <!-- TELA 5: DASHBOARD - HOME -->
 
-        <div id="tela-dashboard" class="tela">
+        <div id="tela-dashboard">
             <div id="dashboard" class="container">
                 <section>
                     <div id="section-dashboard" class="div-section">
@@ -213,7 +213,7 @@
                         </p>
                         <div id="btns-navegacao">
                             <div id="btn-ver-servicos">
-                                <a href="#verServiços">Ver Serviços <img src= "{{ url_for('static', filename='assets/tesoura.svg') }}" alt="tesoura"
+                                <a href="#services-py">Ver Serviços <img src= "{{ url_for('static', filename='assets/tesoura.svg') }}" alt="tesoura"
                                         loading="lazy"></a>
                             </div>
                             <div id="btn-agendar-agora">
@@ -259,7 +259,7 @@
                             </div>
                         </div>
                         <section>
-                            <div id="verServiços" id="services-py">
+                            <div id="services-py">
                                 <h2 style="text-align: center;" class="titulo-secundario">Escolha o servico ideal</h2>
                                 <p><span class="destaque">Qualidade e precisão em cada atendimento</span></p>
                                 <div id="escolha-o-servico">
@@ -397,14 +397,14 @@
                 </section>
             </div>
 
-            <footer class="dashboard tela">
+            <footer class="dashboard">
                 <h4>Contato</h4>
                 <div class="endereco">
                     <span> <img src="/app/static/assets/mapa.svg" alt="ebdereço" class="icones-footer-dashboard">Setor Leste, 123 -
                         Planaltina GO</span>
-                    <span> <img src="/app/static/assets/telefone.svg" alt="telefone para contato"
+                    <span> <img src= "{{ url_for('static', filename='assets/telefone.svg') }}" alt="telefone para contato"
                             class="icones-footer-dashboard">(61) 99999-9999</span>
-                    <span><img src="/app/static/assets/clock-tempo.svg" alt="horarios" class="icones-footer-dashboard"> Seg-Sáb:
+                    <span><img src= "{{ url_for('static', filename='assets/clock-tempo.svg') }}" alt="horarios" class="icones-footer-dashboard"> Seg-Sáb:
                         9h-19h</span>
                 </div>
                 <div class="horarios-funcionamento">
@@ -430,10 +430,10 @@
 
         <!-- TELA: 6 AGENDAMENTO -->
 
-        <div id="tela-agendamento" class="tela">
+        <div id="tela-agendamento">
             <div class="container">
                 <div id="agendar-agora" class="div-section-agendamentos">
-                    <button type="button" id="btn-voltar-dashboard"><img class="icone-voltar" src="/app/static/assets/retornar.svg"
+                    <button type="button" id="btn-voltar-dashboard"><img class="icone-voltar" src= "{{ url_for('static', filename='assets/retornar.svg') }}"
                             alt="botão de voltar"></button>
                     <section class="secao-resumo-corte">
                         <h2>Serviço Selecionado</h2>
