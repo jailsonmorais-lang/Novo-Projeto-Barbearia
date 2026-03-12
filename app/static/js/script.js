@@ -291,7 +291,7 @@ const cortes = {
         descricao: 'Corte tradicional com máquina e tesoura',
         preco: 35,
         tempo: '45 min',
-        imagem: '/app/static/assets/ornaw-haircut-4019676_1280.webp'
+        imagem: '/static/assets/ornaw-haircut-4019676_1280.webp'
     },
 
     barba: {
@@ -299,7 +299,7 @@ const cortes = {
         descricao: 'Alinhamento completo com navalha',
         preco: 25,
         tempo: '30 min',
-        imagem: '/app/static/assets/pexels-beard-1845166_1280.webp'
+        imagem: '/static/assets/pexels-beard-1845166_1280.webp'
     },
 
     combo: {
@@ -307,7 +307,7 @@ const cortes = {
         descricao: 'Combo completo para o visual perfeito',
         preco: 55,
         tempo: '60 min',
-        imagem: '/app/static/assets/pexels-cottonbro-3998415.webp'
+        imagem: '/static/assets/pexels-cottonbro-3998415.webp'
     },
 
     infantil: {
@@ -315,7 +315,7 @@ const cortes = {
         descricao: 'Corte especial para crianças',
         preco: 25,
         tempo: '35 min',
-        imagem: '/app/static/assets/mostafa_meraji-barber-6818714_1280.webp'
+        imagem: '/static/assets/mostafa_meraji-barber-6818714_1280.webp'
     },
 
     sobrancelha: {
@@ -323,7 +323,7 @@ const cortes = {
         descricao: 'Design e alinhamento preciso',
         preco: 15,
         tempo: '15 min',
-        imagem: '/app/static/assets/pexels-cottonbro-3998428.webp'
+        imagem: '/static/assets/pexels-cottonbro-3998428.webp'
     },
 
     platinado: {
@@ -331,7 +331,7 @@ const cortes = {
         descricao: 'Descoloração completa profissional',
         preco: 80,
         tempo: '90 min',
-        imagem: '/app/static/assets/pexels-pavel-danilyuk-7518760.webp'
+        imagem: '/static/assets/pexels-pavel-danilyuk-7518760.webp'
     },
 }
 
@@ -339,19 +339,19 @@ const barbeiros = {
     joao: {
         nome: 'João',
         especialidade: 'Cortes clássicos',
-        foto: '/app/static/assets/brilhos.svg'
+        foto: '/static/assets/brilhos.svg'
     },
 
     pedro: {
         nome: 'Pedro',
         especialidade: 'Barba e design',
-        foto: '/app/static/assets/premio.svg'
+        foto: '/static/assets/premio.svg'
     },
 
     carlos: {
         nome: 'Carlos',
         especialidade: 'Todos os estilos',
-        foto: '/app/static/assets/delfina-pan-wJoB8D3hnzc-unsplash.webp'
+        foto: '/static/assets/delfina-pan-wJoB8D3hnzc-unsplash.webp'
     }
 }
 

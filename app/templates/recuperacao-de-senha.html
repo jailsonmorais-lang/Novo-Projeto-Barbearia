@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <div class="div-section">
+
+        <h2 class="titulo-secundario">Recuperar Senha</h2>
+        <form>
+            <div class="form-login">
+                <label for="whatsapp-recuperar" class="label">WhatsApp Cadastrado</label>
+                <div class="logar">
+                    <img src="{{ url_for('static', filename='assets/whatsapp.svg') }}" alt="whatsapp-recuperar"
+                        class="icone" loading="lazy">
+                    <input type="tel" name="whatsapp-recuperar" id="whatsapp-recuperar" placeholder="61999999999"
+                        required>
+                </div>
+                <label for="codigo" class="label">Digite o código enviado</label>
+                <div class="logar">
+                    <img src="{{ url_for('static', filename='assets/chave.svg') }}" alt="token" class="icone"
+                        loading="lazy">
+                    <input type="number" name="codigo" id="codigo" placeholder="000000" inputmode="numeric">
+                </div>
+                <div id="links-auxiliares">
+                    <a href="#enviarcodigo">Enviar código</a>
+                </div>
+                <div id="erro-recupera-senha" class="erro">
+
+                </div>
+                <div class="botao-login">
+                    <button id="btn-verificar-codigo" type="submit">Verificar Código</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

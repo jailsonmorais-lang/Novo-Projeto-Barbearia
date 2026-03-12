@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <div class="div-section">
+        <h2 class="titulo-secundario">Crie uma nova Senha</h2>
+        <form class="form-login">
+            <label for="nova-senha" class="label">Nova senha</label>
+            <div class="logar">
+                <img src="{{ url_for('static', filename='assets/password.svg') }}" alt="nova-senha" class="icone"
+                    loading="lazy">
+                <input type="password" name="nova-senha" id="nova-senha" placeholder="**********" required>
+                <button type="button" class="btn-mostrar-senha" id="btn-mostrar-nova-senha">
+                    <img id="icone-olho-nova-senha" src="{{ url_for('static', filename='assets/olho-fechado.svg') }}"
+                        alt="mostrar senha" class="icone" loading="lazy">
+                </button>
+            </div>
+            <label for="confirmar-nova-senha" class="label">Confirmar nova senha</label>
+            <div class="logar">
+                <img src="{{ url_for('static', filename='assets/password.svg') }}" alt="nova-senha" class="icone"
+                    loading="lazy">
+                <input type="password" name="confirmar-nova-senha" id="confirmar-nova-senha" placeholder="**********"
+                    required>
+                <button type="button" class="btn-mostrar-senha" id="btn-mostrar-nova-senha-confirmar">
+                    <img id="icone-olho-confirmar-nova-senha"
+                        src="{{ url_for('static', filename='assets/olho-fechado.svg') }}" alt="mostrar senha"
+                        class="icone" loading="lazy">
+                </button>
+            </div>
+            <div id="erro-criar-nova-senha" class="erro">
+
+            </div>
+            <div class="botao-login">
+                <button id="redefinir-senha" type="submit">Redefinir Senha</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

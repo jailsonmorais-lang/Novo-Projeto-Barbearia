@@ -1,7 +1,7 @@
 from flask import Flask
 
 def create_app():
-    # Aqui o Flask entende que deev olhar para dentro da pasta 'app'
+    # Aqui o Flask entende que deve olhar para dentro da pasta 'app'
     app = Flask(__name__,
                 instance_relative_config=True,
                 template_folder='templates',
@@ -10,6 +10,7 @@ def create_app():
     
     # Importa as rotas (Isso evita erros de importação circular)
     from .routes import main_routes
+
     app.register_blueprint(main_routes)
 
 

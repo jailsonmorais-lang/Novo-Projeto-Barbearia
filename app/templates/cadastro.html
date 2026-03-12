@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="logo">
+    <img src="{{ url_for('static', filename='assets/logo.inicial.webp') }}" alt="logo" loading="lazy">
+</div>
+<section>
+    <div class="div-section">
+        <h2 class="titulo-secundario"> Faça seu Cadastro</h2>
+        <form>
+            <div class="form-login">
+                <label for="nome-criar" class="label cadastrar">Nome</label>
+                <div class="logar">
+                    <img src="{{ url_for('static', filename='assets/user.svg') }}" alt="criar-nome" class="icone"
+                        loading="lazy">
+                    <input type="text" name="nome-criar" id="nome-criar" placeholder="Jheison Morais" required>
+                </div>
+                <label for="email-cadastro" class="label">Email</label>
+                <div class="logar">
+                    <img src="{{ url_for('static', filename='/assets/email.svg') }}" alt="email-cadastro" class="icone"
+                        loading="lazy">
+                    <input type="email" name="email-cadastro" id="email-cadastro" placeholder="exemplo@exemplo.com"
+                        required>
+                </div>
+                <label for="password-criar" class="label">Senha</label>
+                <div class="logar">
+                    <img src="{{ url_for('static', filename='assets/password.svg') }}" alt="password-criar"
+                        class="icone" loading="lazy">
+                    <input type="password" name="password-criar" id="password-criar" placeholder="**********" required>
+                    <button type="button" class="btn-mostrar-senha" id="btn-mostrar-senha-cadastro">
+                        <img id="icone-olho-criar" src="{{ url_for('static', filename='assets/olho-fechado.svg') }}"
+                            alt="mostrar senha" class="icone" loading="lazy">
+                    </button>
+                </div>
+                <label for="password-confirmar" class="label">Confirmar Senha</label>
+                <div class="logar">
+                    <img src="{{ url_for('static', filename='assets/password.svg') }}" alt="password-criar"
+                        class="icone" loading="lazy">
+                    <input type="password" name="password-confirmar" id="password-confirmar" placeholder="**********"
+                        required>
+                    <button type="button" class="btn-mostrar-senha" id="btn-mostrar-senha-confirmar">
+                        <img id="icone-olho-confirmar" src="{{ url_for('static', filename='assets/olho-fechado.svg') }}"
+                            alt="mostrar senha" class="icone" loading="lazy">
+                    </button>
+                </div>
+                <label for="whatsapp" class="label">WhatsApp</label>
+                <div class="logar">
+                    <img src="{{ url_for('static', filename='assets/whatsapp.svg') }}" alt="whatsapp" class="icone"
+                        loading="lazy">
+                    <input type="tel" name="whatsapp" id="whatsapp" placeholder="61999999999">
+                </div>
+                <div id="logarSe">
+                    <p>Já tem conta? <a href="#login">Entrar</a></p>
+                </div>
+                <div id="erro-cadastro" class="erro">
+
+                </div>
+                <div class="botao-login">
+                    <button id="btn-cadastrar" type="submit">Cadastrar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="agendar-agora" class="div-section-agendamentos">
+    <button type="button" id="btn-voltar-dashboard"><img class="icone-voltar"
+            src="{{ url_for('static', filename='assets/retornar.svg') }}" alt="botão de voltar"></button>
+    <section class="secao-resumo-corte">
+        <h2>Serviço Selecionado</h2>
+        <div class="cortes-text-cards">
+            <img class="img-cortes" src="" alt="imagem do corte" id="corte-imagem">
+        </div>
+        <div>
+            <h3 id="corte-nome"></h3>
+            <p class="descricao-do-corte" id="corte-descricao"></p>
+            <p><span id="corte-preco"></span></p>
+            <p>Tempo: <span id="corte-tempo"></span></p>
+        </div>
+    </section>
+
+    <section class="secao-dados-cliente">
+        <h2>Seus Dados</h2>
+
+        <label for="cliente-nome">Nome</label>
+        <input type="text" name="cliente-nome" id="cliente-nome" placeholder="Seu nome">
+
+        <label for="cliente-telefone">Telefone</label>
+        <input type="tel" name="cliente-telefone" id="cliente-telefone" placeholder="61999999999">
+
+    </section>
+
+    <section class="secao-barbeiro">
+        <h2>Escolha seu Barbeiro</h2>
+
+        <label for="barbeiro-select">Qual barbeiro você prefere</label>
+
+        <select name="barbeiro-select" id="barbeiro-select">
+            <option value="">-- Selecione um barbeiro --</option>
+            <option value="joao">João</option>
+            <option value="pedro">Pedro</option>
+            <option value="carlos">Carlos</option>
+        </select>
+        <div id="dados-do-barbeiro-selecionado">
+            <h3 id="barbeiro-nome"></h3>
+            <div id="foto-do-barbeiro-selecionado">
+                <img class="img-barbeiro" src="" alt="" id="barbeiro-imagem" loading="lazy">
+            </div>
+            <p class="especialidade-de-corte" id="especialidade-corte"></p>
+        </div>
+    </section>
+
+    <section class="secao-data-hora">
+        <h2>Data e Hora</h2>
+
+        <label for="agendamento-data">Data</label>
+        <input type="date" name="agendamento-data" id="agendamento-data">
+
+        <label for="agendamento-hora">Hora</label>
+        <input type="time" name="agendamento-hora" id="agendamento-hora">
+    </section>
+
+    <section class="secao-observacoes">
+        <h2>Observações (Opcional)</h2>
+
+        <label for="agendamento-observacoes">Algo especial que devemos saber?</label>
+        <textarea name="agendamento-observacoes" id="agendamento-observacoes"
+            placeholder="Ex: Tenho cabelo muito liso..." rows="4"></textarea>
+    </section>
+
+    <div class="secao-botao">
+        <button id="btn-confirmar-agendamento" type="submit">
+            Confirmar Agendamento
+        </button>
+    </div>
+</div>
+{% endblock %}
