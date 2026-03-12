@@ -5,7 +5,7 @@ def create_app():
     app = Flask(__name__,
                 instance_relative_config=True,
                 template_folder='templates',
-                static_folder='static'
+                static_folder='static/css/style.css',
                 )
     
     # Importa as rotas (Isso evita erros de importação circular)
