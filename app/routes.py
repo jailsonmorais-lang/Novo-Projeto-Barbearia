@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, jsonify
 
 #criamos um "Mapa de Rotas" (Bluerprint)
 main_routes = Blueprint('main', __name__)
@@ -6,11 +6,11 @@ main_routes = Blueprint('main', __name__)
 @main_routes.route('/')
 def pagina_inicial():
     # Agora ele vai buscar o index.html dentro da pasta templetas automaticamente
-    return render_template('index.html')
-
-@main_routes.route('/login')
-def pagina_login():
     return render_template('login.html')
+
+""" @main_routes.route('/login')
+def pagina_login():
+    return render_template('login.html') """
 
 
 @main_routes.route('/cadastro')

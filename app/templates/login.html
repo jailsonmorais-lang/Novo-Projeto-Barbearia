@@ -27,8 +27,8 @@
                     </button>
                 </div>
                 <div id="cadastreSe">
-                    <p>Não tem conta? <a href="#cadastre-se">Cadastre-se</a></p>
-                    <a href="#esqueci-a-senha">Esqueci a senha</a>
+                    <p>Não tem conta? <a href="{{ url_for('main.pagina_cadastro') }}">Cadastre-se</a></p>
+                    <a href="{{ url_for('main.pagina_recuperar_senha') }}">Esqueci a senha</a>
                 </div>
                 <div id="erro-login" class="erro">
 
