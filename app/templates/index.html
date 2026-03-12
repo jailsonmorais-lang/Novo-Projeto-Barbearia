@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barbershop</title>
-    <link rel="icon" type="image/x-icon" href="/app/static/assets/favicon.ico/tesoura.ico">
-    <link rel="stylesheet" href="/app/static/css/style.css">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/favicon/tesoura.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&display=swap" rel="stylesheet">
 
 </head>
@@ -17,7 +17,7 @@
         <div id="tela-login" class="tela ativa">
             <div class="container">
                 <div class="logo">
-                    <img src="/app/static/assets/logo.inicial.webp" alt="logo" loading="lazy">
+                    <img src= "{{ url_for('static', filename='assets/logo.inicial.webp') }}" alt="logo" loading="lazy">
                 </div>
                 <h1 class="titulo-principal">Barbearia Morais</h1>
                 <section>
@@ -27,17 +27,17 @@
                             <div class="form-login">
                                 <label for="email-login" class="label">Email </label>
                                 <div class="logar">
-                                    <img src="/app/static/assets/email.svg" alt="email" class="icone" loading="lazy">
+                                    <img src= "{{ url_for('static', filename='assets/email.svg') }}" alt="email" class="icone" loading="lazy">
                                     <input type="email" name="email-login" id="email-login"
                                         placeholder="exemplo@exemplo.com" required>
                                 </div>
                                 <label for="password-login" class="label">Senha </label>
                                 <div class="logar">
-                                    <img src="/app/static/assets/password.svg" alt="Senha-login" class="icone" loading="lazy">
+                                    <img src= "{{ url_for('static', filename='assets/password.svg') }}" alt="Senha-login" class="icone" loading="lazy">
                                     <input type="password" name="password-login" id="password-login"
                                         placeholder="**********" required>
                                     <button type="button" class="btn-mostrar-senha" id="btn-mostrar-senha-login">
-                                        <img id="icone-olho-login" src="/app/static/assets/olho-fechado.svg" alt="mostrar senha"
+                                        <img id="icone-olho-login" src= "{{ url_for('static', filename='assets/olho-fechado.svg') }}" alt="mostrar senha"
                                             class="icone" loading="lazy">
                                     </button>
                                 </div>
@@ -63,7 +63,7 @@
         <div id="tela-criar-conta" class="tela">
             <div class="container">
                 <div class="logo">
-                    <img src="/app/static/assets/logo.inicial.webp" alt="logo" loading="lazy">
+                    <img src= "{{ url_for('static', filename='assets/logo.inicial.webp') }}" alt="logo" loading="lazy">
                 </div>
                 <section>
                     <div class="div-section">
@@ -72,19 +72,19 @@
                             <div class="form-login">
                                 <label for="nome-criar" class="label cadastrar">Nome</label>
                                 <div class="logar">
-                                    <img src="/app/static/assets/user.svg" alt="criar-nome" class="icone" loading="lazy">
+                                    <img src= "{{ url_for('static', filename='assets/user.svg') }}" alt="criar-nome" class="icone" loading="lazy">
                                     <input type="text" name="nome-criar" id="nome-criar" placeholder="Jheison Morais"
                                         required>
                                 </div>
                                 <label for="email-cadastro" class="label">Email</label>
                                 <div class="logar">
-                                    <img src="/app/static/assets/email.svg" alt="email-cadastro" class="icone" loading="lazy">
+                                    <img src= "{{ url_for('static', filename='/assets/email.svg') }}" alt="email-cadastro" class="icone" loading="lazy">
                                     <input type="email" name="email-cadastro" id="email-cadastro"
                                         placeholder="exemplo@exemplo.com" required>
                                 </div>
                                 <label for="password-criar" class="label">Senha</label>
                                 <div class="logar">
-                                    <img src="/app/static/assets/password.svg" alt="password-criar" class="icone" loading="lazy">
+                                    <img src= "{{ url_for('static', filename='assets/password.svg') }}" alt="password-criar" class="icone" loading="lazy">
                                     <input type="password" name="password-criar" id="password-criar"
                                         placeholder="**********" required>
                                     <button type="button" class="btn-mostrar-senha" id="btn-mostrar-senha-cadastro">
@@ -506,7 +506,7 @@
             </div>
         </div>
     </main>
-    <script src="/app/static/js/script.js" defer></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 </body>
 
 </html>
