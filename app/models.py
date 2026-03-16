@@ -7,6 +7,7 @@ class Database:
         self.connection = None
 
     def conectar(self):
+        print(f'Tentando conectar: HOST={DB_HOST}, USER={DB_USER}, PORT={DB_PORT}')
         try:
             self.connection = mysql.connector.connect(
                 host=DB_HOST,
