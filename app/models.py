@@ -22,11 +22,15 @@ class Database:
             return None
         
     def obter_dados(self, query, valores=None):
+        if not self.connection or not self.connection.is_connected():
+            self.conectar()
         escreva = self.connection.cursor(dictionary=True)
         escreva.execute(query, valores)
         return escreva.fetchall()
     
     def executar_query(self, query, valores=None):
+        if not self.connection or not self.connection.is_connected():
+            self.conectar()
         escreva = self.connection.cursor()
         escreva.execute(query, valores)
         self.connection.commit()
