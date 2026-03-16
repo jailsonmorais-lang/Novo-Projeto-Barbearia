@@ -2,8 +2,8 @@
 // Login
 const email = document.querySelector('input#email-login')                 /* Email de login */
 const senha = document.querySelector('input#password-login')              /* Senha de login */
-const retorno = document.querySelector('div#erro-login')                  /* div para mostrar erro no momento do login */
-const erro = '0 10px 20px rgba(237, 58, 58, 0.9)'                  /* estilização da mensagem de erro */
+const erroLogin = document.querySelector('div#erro-login')                  /* div para mostrar erro no momento do login */
+const btnLogin = document.querySelector('button#btn-login')
 
 // Cadastro
 const regexNome = /^[A-Za-zÀ-ÿ\s]{3,70}$/                                 /* Receita para validar nomes */
@@ -12,8 +12,8 @@ const emailCadastro = document.querySelector('input#email-cadastro')      /* Ema
 const senhaCadastro = document.querySelector('input#password-criar')      /* Senha para cadastro */
 const senhaConfirmar = document.querySelector('input#password-confirmar') /* Confirmar a senha de cadastro */
 const whatsapp = document.querySelector('input#whatsapp')                 /* Whatsapp para cadastro */
-const erroCadastro = document.querySelector('div#erro-cadastro')          /* div para mostrar erro no momento do cadastro */
-
+const erroCadastro = document.querySelector('div#erro-cadastro')
+const btnCadastrar = document.querySelector('button#btn-cadastrar')
 
 // Gerar código para criar nova senha
 let codigoGerado = ''
@@ -50,87 +50,21 @@ configurarBotaoMostrarSenha('#btn-mostrar-senha-confirmar', '#password-confirmar
 configurarBotaoMostrarSenha('#btn-mostrar-nova-senha', '#nova-senha', '#icone-olho-nova-senha')
 configurarBotaoMostrarSenha('#btn-mostrar-nova-senha-confirmar', '#confirmar-nova-senha', '#icone-olho-confirmar-nova-senha')
 
-/* ====== VALIDAÇÃO DE LOGIN ====== */
-// Responsáveis por validar dados do formulário de login
-//Retornam mensagens de erro ou executam ação de sucesso
-
-function validarLogin() {
-    if (email.value.length == 0) {
-        alert('Campo de Email obrigatório')
-    } else if (!email.value.includes('@')) {
-        retorno.innerHTML = 'Email invalido!'
-        retorno.style.textShadow = erro
-    } else if (senha.value.length < 8) {
-        retorno.innerHTML = 'A senha deve conter pelo menos 8 caracteres'
-        retorno.style.textShadow = erro
-    } else if (!/[A-Z]/.test(senha.value)) {
-        retorno.innerHTML = 'Senha deve conter pelo menos uma letra maiúscula'
-        retorno.style.textShadow = erro
-    } else {
-        const dadosParaLogin = {
-            email: email.value,
-            senha: senha.value,
-        }
-
-        /* fetch('/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(dadosParaLogin)
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.Erro) {
-                    alert(data.Erro)
-                } else {
-                    alert('Login realizado com sucesso!');
-                    console.log('Resposta do Backend:', data);
-                }
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                alert('Erro ao fazer login conta!');
-            }); */
-    }
+/* FUNÇÃO QUE MOSTRA MENSAGENS DE ERROS COM ESTILIZAÇÃO */
+function mostrarMensagem(elemento, texto) {
+    elemento.innerHTML = texto
+    elemento.style.textShadow = '0 10px 20px rgba(237, 58, 58, 0.9)'
 }
 
-/* ====== EVENT LISTENERS - TELA LOGIN ====== */
-// Escutam ações do usuário na tela de login
-// Enter no input valida o formulário
-// Clique no botão valida o formulário
-// Clique em "Cadastre-se" navega para tela de cadastro
-
-function validarEntrada(seletor) {
-    document.querySelector(seletor).addEventListener('keydown', (evento) => {
-        if (evento.key === 'Enter') {
-            validarLogin()
-        }
-    })
-}
-validarEntrada('input#email-login')
-validarEntrada('input#password-login')
-
-document.querySelector('button#btn-login').addEventListener('click', (evento) => {
-    evento.preventDefault()
-    validarLogin()
-})
-
-document.querySelector('#tela-login a[href="#cadastre-se"]').addEventListener('click', (evento) => {
-    evento.preventDefault()
-    limparCadastro()
-})
-
-// Função para limpar campo de cadastro
-
+/* FUNÇÃO PARA LIMPAR CAMPOS */
 function limparCadastro() {
     nomeCadastro.value = ''
     emailCadastro.value = ''
     senhaCadastro.value = ''
     senhaConfirmar.value = ''
     whatsapp.value = ''
-    erroCadastro.innerHTML = ''
-    erroCadastro.style.textShadow = ''
+    erro.innerHTML = ''
+    erro.style.textShadow = ''
     erroCriarNovaSenha.innerHTML = ''
     erroCriarNovaSenha.style.textShadow = ''
     email.value = ''
@@ -146,72 +80,100 @@ function limparCadastro() {
     codigoGerado = ''
 }
 
-/* ====== VALIDAÇÃO DE CADASTRO ====== */
-function validarCadastro() {
-    if (nomeCadastro.value.length == 0) {
-        erroCadastro.innerHTML = 'Campo "Nome" não pode ficar em branco.'
-        erroCadastro.style.textShadow = erro
-    } else if (/[0-9]/.test(nomeCadastro.value)) {
-        erroCadastro.innerHTML = 'Nome não pode ter números.'
-        erroCadastro.style.textShadow = erro
-    } else if (!regexNome.test(nomeCadastro.value)) {
-        erroCadastro.innerHTML = 'Nome tem caracteres invalidos.'
-        erroCadastro.style.textShadow = erro
-    } else if (nomeCadastro.value.length < 3 || nomeCadastro.value.length > 50) {
-        erroCadastro.innerHTML = 'Nome muito curto ou muito longo'
-        erroCadastro.style.textShadow = erro
-    } else if (emailCadastro.value.length == 0) {
-        erroCadastro.innerHTML = 'Campo "Email" não pode ficar em branco.'
-        erroCadastro.style.textShadow = erro
-    } else if (!emailCadastro.value.includes('@')) {
-        erroCadastro.innerHTML = 'Email invalido.'
-        erroCadastro.style.textShadow = erro
-    } else if (senhaCadastro.value.length < 8) {
-        erroCadastro.innerHTML = 'Senha deve conter no minimo 8 caracteres'
-        erroCadastro.style.textShadow = erro
-    } else if (!/[A-Z]/.test(senhaCadastro.value)) {
-        erroCadastro.innerHTML = 'Senha deve conter pelo menos uma letra maiúscula'
-        erroCadastro.style.textShadow = erro
+/* ====== VALIDAÇÃO DE LOGIN ====== */
+// Responsáveis por validar dados do formulário de login
+//Retornam mensagens de erro ou executam ação de sucesso
+if (btnLogin) {
+    document.querySelector('button#btn-login').addEventListener('click', (evento) => {
+        evento.preventDefault()
+        if (email.value.length == 0) {
+            alert('Campo de Email obrigatório')
+        } else if (!email.value.includes('@')) {
+            mostrarMensagem(erroLogin, 'Email invalido!')
+        } else if (senha.value.length < 8) {
+            mostrarMensagem(erroLogin, 'A senha deve conter pelo menos 8 caracteres')
+        } else if (!/[A-Z]/.test(senha.value)) {
+            mostrarMensagem(erroLogin, 'Senha deve conter pelo menos uma letra maiúscula')
+        } else {
+            const dadosParaLogin = {
+                email: email.value,
+                senha: senha.value,
+            }
+            fetch('/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dadosParaLogin)
+            })
+            .then(resposta => resposta.json())
+            .then(dados => {
+                if (dados.erro) {
+                    erroLogin.innerHTML = dados.erro
+                } else {
+                    alert('Login realizado com sucesso!');
+                    window.location = '/dashboard'
+                }
+            })
+        }
+    })
+}
+    
+    /* ====== VALIDAÇÃO DE CADASTRO ====== */
+if (btnCadastrar) {
+    document.querySelector('button#btn-cadastrar').addEventListener('click', (evento) => {
+        evento.preventDefault()
+        if (nomeCadastro.value.length == 0) {
+            mostrarMensagem(erroCadastro, 'Campo "Nome" não pode ficar em branco')
+        } else if (/[0-9]/.test(nomeCadastro.value)) {
+            mostrarMensagem(erroCadastro, 'Nome não pode ter números.')
+        } else if (!regexNome.test(nomeCadastro.value)) {
+            mostrarMensagem(erroCadastro, 'Nome tem caracteres invalidos.')
+        } else if (nomeCadastro.value.length < 3 || nomeCadastro.value.length > 50) {
+            mostrarMensagem(erroCadastro, 'Nome muito curto ou muito longo')
+        } else if (emailCadastro.value.length == 0) {
+            mostrarMensagem(erroCadastro, 'Campo "Email" não pode ficar em branco.')
+        } else if (!emailCadastro.value.includes('@')) {
+            mostrarMensagem(erroCadastro, 'Email invalido.')
+        } else if (senhaCadastro.value.length < 8) {
+            mostrarMensagem(erroCadastro, 'Senha deve conter no minimo 8 caracteres')
+        } else if (!/[A-Z]/.test(senhaCadastro.value)) {
+            mostrarMensagem(erroCadastro, 'Senha deve conter pelo menos uma letra maiúscula')
     } else if (senhaConfirmar.value !== senhaCadastro.value) {
-        erroCadastro.innerHTML = 'As senhas não coincidem!'
-        erroCadastro.style.textShadow = erro
+        mostrarMensagem(erroCadastro, 'As senhas não coincidem!')
     } else if (whatsapp.value.length < 11) {
-        erroCadastro.innerHTML = 'Número de WhatsApp invalido'
-        erroCadastro.style.textShadow = erro
+        mostrarMensagem(erroCadastro, 'Número de WhatsApp invalido')
     } else if (!/^[0-9]{11}$/.test(whatsapp.value.replace(" ", ''))) {
-        erroCadastro.innerHTML = 'Número de WhatsApp invalido'
-        erroCadastro.style.textShadow = erro
+        mostrarMensagem(erroCadastro, 'Número de WhatsApp invalido')
     } else {
-
+        
         const dadosCadastro = {
-            nome_completo: nomeCadastro.value,
+            nome: nomeCadastro.value,
             email: emailCadastro.value,
             senha: senhaCadastro.value,
             whatsapp: whatsapp.value
         }
-
-        /* fetch('/usuarios', {
+        
+        fetch('/cadastro', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dadosCadastro)
         })
-            .then(resposta => resposta.json())
-            .then(dados => {
-                if (dados.erro) {
-                    erroCadastro.innerHTML = dados.erro
-                } else {
-                    erroCadastro.innerHTML = dados.mensagem
-                }
-            }) */
+        .then(resposta => resposta.json())
+        .then(dados => {
+            if (dados.erro) {
+                erroCadastro.innerHTML = dados.erro
+            } else {
+                erroCadastro.innerHTML = dados.mensagem
+                window.location = '/'
+            }
+        })
     }
 }
+)
+}
 
-document.querySelector('button#btn-cadastrar').addEventListener('click', (evento) => {
-    evento.preventDefault()
-    validarCadastro()
-})
-
-document.querySelector('button#btn-verificar-codigo').addEventListener('click', (evento) => {
+/* document.querySelector('button#btn-verificar-codigo').addEventListener('click', (evento) => {
     evento.preventDefault()
     recuperarSenha()
 })
@@ -225,7 +187,7 @@ document.querySelector('#tela-recuperar-senha a[href="#enviarcodigo"]').addEvent
 document.querySelector('button#redefinir-senha').addEventListener('click', (evento) => {
     evento.preventDefault()
     criarNovaSenha()
-})
+}) */
 
 /* ====== RECUPERAÇÃO DE SENHA ====== */
 
