@@ -84,7 +84,7 @@ function limparCadastro() {
 // Responsáveis por validar dados do formulário de login
 //Retornam mensagens de erro ou executam ação de sucesso
 if (btnLogin) {
-    document.querySelector('button#btn-login').addEventListener('click', (evento) => {
+    btnLogin.addEventListener('click', (evento) => {
         evento.preventDefault()
         if (email.value.length == 0) {
             alert('Campo de Email obrigatório')
@@ -121,7 +121,7 @@ if (btnLogin) {
     
     /* ====== VALIDAÇÃO DE CADASTRO ====== */
 if (btnCadastrar) {
-    document.querySelector('button#btn-cadastrar').addEventListener('click', (evento) => {
+    btnCadastrar.addEventListener('click', (evento) => {
         evento.preventDefault()
         if (nomeCadastro.value.length == 0) {
             mostrarMensagem(erroCadastro, 'Campo "Nome" não pode ficar em branco')

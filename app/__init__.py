@@ -13,6 +13,10 @@ def create_app():
 
     app.register_blueprint(main_routes)
 
+    from app.models import db
+
+    db.conectar()
+
 
 
     return app
