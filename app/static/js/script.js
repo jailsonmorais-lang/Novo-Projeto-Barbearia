@@ -209,6 +209,10 @@ if (btnEnviarCodigo) {
                         mostrarMensagem(erroRecuperaSenha, 'Código enviado! Verifique seu email')
                     }
                 })
+                .catch(erro => {
+                    console.log('Erro de rede: ', erro)
+                    mostrarMensagem(erroRecuperaSenha, 'Erro de conexão')
+                })
         }
     })
 }
