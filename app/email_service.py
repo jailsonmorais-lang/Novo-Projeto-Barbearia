@@ -6,37 +6,39 @@ import os
 
 def enviar_email(destinatario, codigo):
     try:
-        servidor = smtplib.SMTP('smtp.gmail.com', 587)
-        servidor.starttls()
-        servidor.login(os.getenv('EMAIL_REMETENTE'), os.getenv('EMAIL_SENHA'))
+        import ssl
+        contexto = ssl.create_default_context()
 
-        mensagem = MIMEMultipart()
-        mensagem['From'] = os.getenv('EMAIL_REMETENTE')
-        mensagem['TO'] = destinatario
-        mensagem['Subject'] = 'Recuperação de senha aplicatico Barbershop'
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=contexto) as servidor:
+            servidor.login(os.getenv('EMAIL_REMETENTE'),
+                           os.getenv('EMAIL_SENHA'))
 
-        corpo = f'''Olá!
+            mensagem = MIMEMultipart()
+            mensagem['From'] = os.getenv('EMAIL_REMETENTE')
+            mensagem['TO'] = destinatario
+            mensagem['Subject'] = 'Recuperação de senha aplicatico Barbershop'
 
-Recebemos uma solicitação de recuperação de senha para sua conta na Barbearia Morais.
+            corpo = f'''Olá!
 
-Seu código de verificação é:
+            Recebemos uma solicitação de recuperação de senha para sua conta na Barbearia Morais.
 
-🔐 {codigo}
+            Seu código de verificação é:
 
-Este código é válido por 10 minutos. Após esse prazo, será necessário solicitar um novo código.
+            🔐 {codigo}
 
-Se você não solicitou a recuperação de senha, ignore este email. Sua conta permanece segura.
+            Este código é válido por 10 minutos. Após esse prazo, será necessário solicitar um novo código.
 
-Atenciosamente,
-Equipe Barbearia Morais'''
-        
-        mensagem.attach(MIMEText(corpo, 'plain'))
+            Se você não solicitou a recuperação de senha, ignore este email. Sua conta permanece segura.
 
-        servidor.sendmail(os.getenv('EMAIL_REMETENTE'),
-                        destinatario, mensagem.as_string())
-        servidor.quit()
-        return True
-    
+            Atenciosamente,
+            Equipe Barbearia Morais'''
+
+            mensagem.attach(MIMEText(corpo, 'plain'))
+
+            servidor.sendmail(os.getenv('EMAIL_REMETENTE'),
+                              destinatario, mensagem.as_string())
+            return True
+
     except Exception as erro:
         print(f'Erro ao enviar email: {erro}')
         return False
