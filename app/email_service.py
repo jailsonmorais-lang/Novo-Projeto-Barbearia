@@ -1,24 +1,19 @@
-import smtplib
+""" import smtplib
 from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from email.mime.multipart import MIMEMultipart """
+import resend
 import os
 
 
 def enviar_email(destinatario, codigo):
     try:
-        import ssl
-        contexto = ssl.create_default_context()
+        resend.api_key = os.getenv('RESEND_API_KEY')
 
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=contexto) as servidor:
-            servidor.login(os.getenv('EMAIL_REMETENTE'),
-                           os.getenv('EMAIL_SENHA'))
-
-            mensagem = MIMEMultipart()
-            mensagem['From'] = os.getenv('EMAIL_REMETENTE')
-            mensagem['TO'] = destinatario
-            mensagem['Subject'] = 'Recuperação de senha aplicatico Barbershop'
-
-            corpo = f'''Olá!
+        resend.Emails.send({
+            'from': 'onboarding@resend.dev',
+            'to': destinatario,
+            'subject': 'Recuperação de senha aplicatico Barbershop',
+            'text': f'''Olá!
 
             Recebemos uma solicitação de recuperação de senha para sua conta na Barbearia Morais.
 
@@ -33,11 +28,8 @@ def enviar_email(destinatario, codigo):
             Atenciosamente,
             Equipe Barbearia Morais'''
 
-            mensagem.attach(MIMEText(corpo, 'plain'))
-
-            servidor.sendmail(os.getenv('EMAIL_REMETENTE'),
-                              destinatario, mensagem.as_string())
-            return True
+        })
+        return True
 
     except Exception as erro:
         print(f'Erro ao enviar email: {erro}')
