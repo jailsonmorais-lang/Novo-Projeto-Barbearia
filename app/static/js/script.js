@@ -17,13 +17,16 @@ const btnCadastrar = document.querySelector('button#btn-cadastrar')
 
 // Gerar código para criar nova senha
 let codigoGerado = ''
+const btnEnviarCodigo = document.querySelector('a#enviarcodigo')
+const btnVerificarCodigo = document.querySelector('button#btn-verificar-codigo')
+const btnRedefinirSenha = document.querySelector('button#redefinir-senha')
 const erroRecuperaSenha = document.querySelector('div#erro-recupera-senha')
 let codigo = document.querySelector('input#codigo')
-let whatsRecupera = document.querySelector('input#whatsapp-recuperar')
-const whatsappsRegistrados = ['61999999999']
+let emailRecupera = document.querySelector('input#whatsapp-recuperar')
 let novaSenha = document.querySelector('input#nova-senha')
 let confirmarNovaSenha = document.querySelector('input#confirmar-nova-senha')
-let erroCriarNovaSenha = document.querySelector('div#erro-criar-nova-senha')
+const erroCriarNovaSenha = document.querySelector('div#erro-criar-nova-senha')
+const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 /* BOTÃO PARA VIZUALIZAR SENHAS */
 
@@ -74,7 +77,8 @@ function limparCadastro() {
     erroRecuperaSenha.innerHTML = ''
     erroRecuperaSenha.style.textShadow = ''
     codigo.value = ''
-    whatsRecupera.value = ''
+    emailRecupera
+        .value = ''
     novaSenha.value = ''
     confirmarNovaSenha.value = ''
     codigoGerado = ''
@@ -88,7 +92,7 @@ if (btnLogin) {
         evento.preventDefault()
         if (email.value.length == 0) {
             alert('Campo de Email obrigatório')
-        } else if (!email.value.includes('@')) {
+        } else if (!regexEmail.test(email.value)) {
             mostrarMensagem(erroLogin, 'Email invalido!')
         } else if (senha.value.length < 8) {
             mostrarMensagem(erroLogin, 'A senha deve conter pelo menos 8 caracteres')
@@ -106,143 +110,166 @@ if (btnLogin) {
                 },
                 body: JSON.stringify(dadosParaLogin)
             })
-            .then(resposta => resposta.json())
-            .then(dados => {
-                if (dados.erro) {
-                    erroLogin.innerHTML = dados.erro
-                } else {
-                    alert('Login realizado com sucesso!');
-                    window.location = '/dashboard'
-                }
-            })
+                .then(resposta => resposta.json())
+                .then(dados => {
+                    if (dados.erro) {
+                        erroLogin.innerHTML = dados.erro
+                    } else {
+                        alert('Login realizado com sucesso!');
+                        window.location = '/dashboard'
+                    }
+                })
         }
     })
 }
-    
-    /* ====== VALIDAÇÃO DE CADASTRO ====== */
+
+/* ====== VALIDAÇÃO DE CADASTRO ====== */
+
 if (btnCadastrar) {
     btnCadastrar.addEventListener('click', (evento) => {
         evento.preventDefault()
         if (nomeCadastro.value.length == 0) {
             mostrarMensagem(erroCadastro, 'Campo "Nome" não pode ficar em branco')
+
         } else if (/[0-9]/.test(nomeCadastro.value)) {
             mostrarMensagem(erroCadastro, 'Nome não pode ter números.')
+
         } else if (!regexNome.test(nomeCadastro.value)) {
             mostrarMensagem(erroCadastro, 'Nome tem caracteres invalidos.')
+
         } else if (nomeCadastro.value.length < 3 || nomeCadastro.value.length > 50) {
             mostrarMensagem(erroCadastro, 'Nome muito curto ou muito longo')
+
         } else if (emailCadastro.value.length == 0) {
             mostrarMensagem(erroCadastro, 'Campo "Email" não pode ficar em branco.')
-        } else if (!emailCadastro.value.includes('@')) {
+
+        } else if (!regexEmail.test(emailCadastro.value)) {
             mostrarMensagem(erroCadastro, 'Email invalido.')
+
         } else if (senhaCadastro.value.length < 8) {
             mostrarMensagem(erroCadastro, 'Senha deve conter no minimo 8 caracteres')
         } else if (!/[A-Z]/.test(senhaCadastro.value)) {
             mostrarMensagem(erroCadastro, 'Senha deve conter pelo menos uma letra maiúscula')
-    } else if (senhaConfirmar.value !== senhaCadastro.value) {
-        mostrarMensagem(erroCadastro, 'As senhas não coincidem!')
-    } else if (whatsapp.value.length < 11) {
-        mostrarMensagem(erroCadastro, 'Número de WhatsApp invalido')
-    } else if (!/^[0-9]{11}$/.test(whatsapp.value.replace(" ", ''))) {
-        mostrarMensagem(erroCadastro, 'Número de WhatsApp invalido')
-    } else {
-        
-        const dadosCadastro = {
-            nome: nomeCadastro.value,
-            email: emailCadastro.value,
-            senha: senhaCadastro.value,
-            whatsapp: whatsapp.value
-        }
-        
-        fetch('/cadastro', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dadosCadastro)
-        })
-        .then(resposta => resposta.json())
-        .then(dados => {
-            if (dados.erro) {
-                erroCadastro.innerHTML = dados.erro
-            } else {
-                erroCadastro.innerHTML = dados.mensagem
-                window.location = '/'
+        } else if (senhaConfirmar.value !== senhaCadastro.value) {
+            mostrarMensagem(erroCadastro, 'As senhas não coincidem!')
+        } else if (whatsapp.value.length < 11) {
+            mostrarMensagem(erroCadastro, 'Número de WhatsApp invalido')
+        } else if (!/^[0-9]{11}$/.test(whatsapp.value.replace(" ", ''))) {
+            mostrarMensagem(erroCadastro, 'Número de WhatsApp invalido')
+        } else {
+
+            const dadosCadastro = {
+                nome: nomeCadastro.value,
+                email: emailCadastro.value,
+                senha: senhaCadastro.value,
+                whatsapp: whatsapp.value
             }
-        })
+
+            fetch('/cadastro', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dadosCadastro)
+            })
+                .then(resposta => resposta.json())
+                .then(dados => {
+                    if (dados.erro) {
+                        erroCadastro.innerHTML = dados.erro
+                    } else {
+                        erroCadastro.innerHTML = dados.mensagem
+                        window.location = '/'
+                    }
+                })
+        }
     }
+    )
 }
-)
-}
-
-/* document.querySelector('button#btn-verificar-codigo').addEventListener('click', (evento) => {
-    evento.preventDefault()
-    recuperarSenha()
-})
-
-document.querySelector('#tela-recuperar-senha a[href="#enviarcodigo"]').addEventListener('click', (evento) => {
-    evento.preventDefault()
-    enviarCodigo()
-
-})
-
-document.querySelector('button#redefinir-senha').addEventListener('click', (evento) => {
-    evento.preventDefault()
-    criarNovaSenha()
-}) */
 
 /* ====== RECUPERAÇÃO DE SENHA ====== */
 
-function enviarCodigo() {
-    if (whatsRecupera.value.length < 11) {
-        erroRecuperaSenha.innerHTML = 'Número de WhatsApp invalido'
-        erroRecuperaSenha.style.textShadow = erro
-    } else if (!/^[0-9]{11}$/.test(whatsRecupera.value.replace(" ", ''))) {
-        erroRecuperaSenha.innerHTML = 'Número de WhatsApp invalido'
-        erroRecuperaSenha.style.textShadow = erro
-    } else if (!whatsappsRegistrados.includes(whatsRecupera.value)) {
-        erroRecuperaSenha.innerHTML = 'Número de WhatsApp não encontrado!'
-        erroRecuperaSenha.style.textShadow = erro
-    } else {
-        codigoGerado = String(Math.floor(Math.random() * 1000000)).padStart(6, '0')
-        console.log('Codigo gerado:', codigoGerado)
-        erroRecuperaSenha.innerHTML = 'Código enviado! Verifique seu WhatsApp'
-        erroRecuperaSenha.style.textShadow = ''
-    }
+if (btnEnviarCodigo) {
+    btnEnviarCodigo.addEventListener('click', (evento) => {
+        evento.preventDefault()
+        if (emailRecupera.value.length == 0) {
+            mostrarMensagem(erroRecuperaSenha, 'Informe o Email!')
+        } else if (!regexEmail.test(emailRecupera.value)) {
+            mostrarMensagem(erroRecuperaSenha, 'Email invalido!')
+        } else {
+            fetch('/recuperacao-de-senha', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({ email: emailRecupera.value })
+            })
+                .then(resposta => resposta.json())
+                .then(dados => {
+                    if (dados.erro) {
+                        mostrarMensagem(erroRecuperaSenha, dados.erro)
+                    } else {
+                        mostrarMensagem(erroRecuperaSenha, 'Código enviado! Verifique seu email')
+                    }
+                })
+        }
+    })
 }
 
-function recuperarSenha() {
-    if (whatsRecupera.value.length < 11) {
-        erroRecuperaSenha.innerHTML = 'Número de WhatsApp invalido'
-        erroRecuperaSenha.style.textShadow = erro
-    } else if (!/^[0-9]{11}$/.test(whatsRecupera.value.replace(" ", ''))) {
-        erroRecuperaSenha.innerHTML = 'Número de WhatsApp invalido'
-        erroRecuperaSenha.style.textShadow = erro
-    } else if (!whatsappsRegistrados.includes(whatsRecupera.value)) {
-        erroRecuperaSenha.innerHTML = 'Número de WhatsApp não encontrado!'
-        erroRecuperaSenha.style.textShadow = erro
-    } else if (codigo.value.length > 6 || codigo.value.length < 6) {
-        erroRecuperaSenha.innerHTML = 'Código deve conter 6 digitos'
-        erroRecuperaSenha.style.textShadow = erro
-    } else if (codigo.value !== codigoGerado) {
-        erroRecuperaSenha.innerHTML = 'Código INCORRETO'
-        erroRecuperaSenha.style.textShadow = erro
-    } else {
+/* ====== VERIFICAR CÓDIGO ====== */
 
-    }
+if (btnVerificarCodigo) {
+    btnVerificarCodigo.addEventListener('click', (evento) => {
+        evento.preventDefault()
+        if (codigo.value.length == 0) {
+            mostrarMensagem(erroRecuperaSenha, 'Digite o código!')
+        } else {
+
+            fetch('/validar-codigo', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({ codigo: codigo.value })
+            })
+                .then(resposta => resposta.json())
+                .then(dados => {
+                    if (dados.erro) {
+                        mostrarMensagem(erroRecuperaSenha, dados.erro)
+                    } else {
+                        mostrarMensagem(erroRecuperaSenha, dados.mensagem)
+                        window.location = '/criar-senha'
+                    }
+                })
+        }
+    })
 }
 
-function criarNovaSenha() {
-    if (novaSenha.value.length < 8) {
-        erroCriarNovaSenha.innerHTML = 'Senha deve conter no minimo 8 caracteres'
-        erroCriarNovaSenha.style.textShadow = erro
-    } else if (!/[A-Z]/.test(novaSenha.value)) {
-        erroCriarNovaSenha.innerHTML = 'Senha deve conter uma letra maiúscula'
-        erroCriarNovaSenha.style.textShadow = erro
-    } else if (confirmarNovaSenha.value !== novaSenha.value) {
-        erroCriarNovaSenha.innerHTML = 'As senhas não coincidem!'
-        erroCriarNovaSenha.style.textShadow = erro
-    } else {
+/* ====== REDEFINIR SENHA ====== */
 
-    }
+if (btnRedefinirSenha) {
+    btnRedefinirSenha.addEventListener('click', (evento) => {
+        evento.preventDefault()
+        if (novaSenha.value.length == 0 || confirmarNovaSenha.value.length == 0) {
+            mostrarMensagem(erroCriarNovaSenha, 'Digite nova senha!')
+        } else if (novaSenha.value !== confirmarNovaSenha.value) {
+            mostrarMensagem(erroCriarNovaSenha, 'As senhas não coincidem!')
+        } else {
+            fetch('/criar-senha', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({ senha: novaSenha.value })
+            })
+                .then(resposta => resposta.json())
+                .then(dados => {
+                    if (dados.erro) {
+                        mostrarMensagem(erroCriarNovaSenha, dados.erro)
+                    } else {
+                        mostrarMensagem(erroCriarNovaSenha, dados.mensagem)
+                        window.location = '/'
+                    }
+                })
+        }
+    })
 }
 
 /* TELA DE AGENDAMENTO */
