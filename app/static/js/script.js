@@ -2,7 +2,7 @@
 // Login
 const email = document.querySelector('input#email-login')                 /* Email de login */
 const senha = document.querySelector('input#password-login')              /* Senha de login */
-const erroLogin = document.querySelector('div#erro-login')                  /* div para mostrar erro no momento do login */
+const respostaLogin = document.querySelector('div#erro-login')                /* div para mostrar reposta no momento do login */
 const btnLogin = document.querySelector('button#btn-login')
 
 // Cadastro
@@ -12,7 +12,7 @@ const emailCadastro = document.querySelector('input#email-cadastro')      /* Ema
 const senhaCadastro = document.querySelector('input#password-criar')      /* Senha para cadastro */
 const senhaConfirmar = document.querySelector('input#password-confirmar') /* Confirmar a senha de cadastro */
 const whatsapp = document.querySelector('input#whatsapp')                 /* Whatsapp para cadastro */
-const erroCadastro = document.querySelector('div#erro-cadastro')
+const respostaCadastro = document.querySelector('div#erro-cadastro')
 const btnCadastrar = document.querySelector('button#btn-cadastrar')
 
 // Gerar código para criar nova senha
@@ -20,12 +20,12 @@ let codigoGerado = ''
 const btnEnviarCodigo = document.querySelector('a#enviarcodigo')
 const btnVerificarCodigo = document.querySelector('button#btn-verificar-codigo')
 const btnRedefinirSenha = document.querySelector('button#redefinir-senha')
-const erroRecuperaSenha = document.querySelector('div#erro-recupera-senha')
+const respostaRecuperaSenha = document.querySelector('div#erro-recupera-senha')
 let codigo = document.querySelector('input#codigo')
 let emailRecupera = document.querySelector('input#whatsapp-recuperar')
 let novaSenha = document.querySelector('input#nova-senha')
 let confirmarNovaSenha = document.querySelector('input#confirmar-nova-senha')
-const erroCriarNovaSenha = document.querySelector('div#erro-criar-nova-senha')
+const respostaCriarNovaSenha = document.querySelector('div#erro-criar-nova-senha')
 const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 /* BOTÃO PARA VIZUALIZAR SENHAS */
@@ -56,7 +56,8 @@ configurarBotaoMostrarSenha('#btn-mostrar-nova-senha-confirmar', '#confirmar-nov
 /* FUNÇÃO QUE MOSTRA MENSAGENS DE ERROS COM ESTILIZAÇÃO */
 function mostrarMensagem(elemento, texto) {
     elemento.innerHTML = texto
-    elemento.style.textShadow = '0 10px 20px rgba(237, 58, 58, 0.9)'
+    elemento.style.textShadow = '0 1px 20px rgba(237, 58, 58, 0.9)'
+    elemento.style.color = 'white'
 }
 
 /* FUNÇÃO PARA LIMPAR CAMPOS */
@@ -66,22 +67,18 @@ function limparCadastro() {
     senhaCadastro.value = ''
     senhaConfirmar.value = ''
     whatsapp.value = ''
-    erro.innerHTML = ''
-    erro.style.textShadow = ''
-    erroCriarNovaSenha.innerHTML = ''
-    erroCriarNovaSenha.style.textShadow = ''
+    respostaCriarNovaSenha.innerHTML = ''
+    respostaCriarNovaSenha.style.textShadow = ''
     email.value = ''
     senha.value = ''
-    retorno.innerHTML = ''
-    retorno.style.textShadow = ''
-    erroRecuperaSenha.innerHTML = ''
-    erroRecuperaSenha.style.textShadow = ''
+    respostaRecuperaSenha.innerHTML = ''
+    respostaRecuperaSenha.style.textShadow = ''
     codigo.value = ''
-    emailRecupera
-        .value = ''
+    emailRecupera.value = ''
     novaSenha.value = ''
     confirmarNovaSenha.value = ''
     codigoGerado = ''
+    dados = ''
 }
 
 /* ====== VALIDAÇÃO DE LOGIN ====== */
@@ -93,11 +90,11 @@ if (btnLogin) {
         if (email.value.length == 0) {
             alert('Campo de Email obrigatório')
         } else if (!regexEmail.test(email.value)) {
-            mostrarMensagem(erroLogin, 'Email invalido!')
+            mostrarMensagem(respostaLogin, 'Email invalido!')
         } else if (senha.value.length < 8) {
-            mostrarMensagem(erroLogin, 'A senha deve conter pelo menos 8 caracteres')
+            mostrarMensagem(respostaLogin, 'A senha deve conter pelo menos 8 caracteres')
         } else if (!/[A-Z]/.test(senha.value)) {
-            mostrarMensagem(erroLogin, 'Senha deve conter pelo menos uma letra maiúscula')
+            mostrarMensagem(respostaLogin, 'Senha deve conter pelo menos uma letra maiúscula')
         } else {
             const dadosParaLogin = {
                 email: email.value,
@@ -113,7 +110,7 @@ if (btnLogin) {
                 .then(resposta => resposta.json())
                 .then(dados => {
                     if (dados.erro) {
-                        erroLogin.innerHTML = dados.erro
+                        respostaLogin.innerHTML = dados.erro
                     } else {
                         alert('Login realizado com sucesso!');
                         window.location = '/dashboard'
@@ -129,33 +126,33 @@ if (btnCadastrar) {
     btnCadastrar.addEventListener('click', (evento) => {
         evento.preventDefault()
         if (nomeCadastro.value.length == 0) {
-            mostrarMensagem(erroCadastro, 'Campo "Nome" não pode ficar em branco')
+            mostrarMensagem(respostaCadastro, 'Campo "Nome" não pode ficar em branco')
 
         } else if (/[0-9]/.test(nomeCadastro.value)) {
-            mostrarMensagem(erroCadastro, 'Nome não pode ter números.')
+            mostrarMensagem(respostaCadastro, 'Nome não pode ter números.')
 
         } else if (!regexNome.test(nomeCadastro.value)) {
-            mostrarMensagem(erroCadastro, 'Nome tem caracteres invalidos.')
+            mostrarMensagem(respostaCadastro, 'Nome tem caracteres invalidos.')
 
         } else if (nomeCadastro.value.length < 3 || nomeCadastro.value.length > 50) {
-            mostrarMensagem(erroCadastro, 'Nome muito curto ou muito longo')
+            mostrarMensagem(respostaCadastro, 'Nome muito curto ou muito longo')
 
         } else if (emailCadastro.value.length == 0) {
-            mostrarMensagem(erroCadastro, 'Campo "Email" não pode ficar em branco.')
+            mostrarMensagem(respostaCadastro, 'Campo "Email" não pode ficar em branco.')
 
         } else if (!regexEmail.test(emailCadastro.value)) {
-            mostrarMensagem(erroCadastro, 'Email invalido.')
+            mostrarMensagem(respostaCadastro, 'Email invalido.')
 
         } else if (senhaCadastro.value.length < 8) {
-            mostrarMensagem(erroCadastro, 'Senha deve conter no minimo 8 caracteres')
+            mostrarMensagem(respostaCadastro, 'Senha deve conter no minimo 8 caracteres')
         } else if (!/[A-Z]/.test(senhaCadastro.value)) {
-            mostrarMensagem(erroCadastro, 'Senha deve conter pelo menos uma letra maiúscula')
+            mostrarMensagem(respostaCadastro, 'Senha deve conter pelo menos uma letra maiúscula')
         } else if (senhaConfirmar.value !== senhaCadastro.value) {
-            mostrarMensagem(erroCadastro, 'As senhas não coincidem!')
+            mostrarMensagem(respostaCadastro, 'As senhas não coincidem!')
         } else if (whatsapp.value.length < 11) {
-            mostrarMensagem(erroCadastro, 'Número de WhatsApp invalido')
+            mostrarMensagem(respostaCadastro, 'Número de WhatsApp invalido')
         } else if (!/^[0-9]{11}$/.test(whatsapp.value.replace(" ", ''))) {
-            mostrarMensagem(erroCadastro, 'Número de WhatsApp invalido')
+            mostrarMensagem(respostaCadastro, 'Número de WhatsApp invalido')
         } else {
 
             const dadosCadastro = {
@@ -173,9 +170,9 @@ if (btnCadastrar) {
                 .then(resposta => resposta.json())
                 .then(dados => {
                     if (dados.erro) {
-                        erroCadastro.innerHTML = dados.erro
+                        respostaCadastro.innerHTML = dados.erro
                     } else {
-                        erroCadastro.innerHTML = dados.mensagem
+                        respostaCadastro.innerHTML = dados.mensagem
                         window.location = '/'
                     }
                 })
@@ -190,9 +187,9 @@ if (btnEnviarCodigo) {
     btnEnviarCodigo.addEventListener('click', (evento) => {
         evento.preventDefault()
         if (emailRecupera.value.length == 0) {
-            mostrarMensagem(erroRecuperaSenha, 'Informe o Email!')
+            mostrarMensagem(respostaRecuperaSenha, 'Informe o Email!')
         } else if (!regexEmail.test(emailRecupera.value)) {
-            mostrarMensagem(erroRecuperaSenha, 'Email invalido!')
+            mostrarMensagem(respostaRecuperaSenha, 'Email invalido!')
         } else {
             fetch('/recuperacao-de-senha', {
                 method: 'POST',
@@ -204,14 +201,14 @@ if (btnEnviarCodigo) {
                 .then(resposta => resposta.json())
                 .then(dados => {
                     if (dados.erro) {
-                        mostrarMensagem(erroRecuperaSenha, dados.erro)
+                        mostrarMensagem(respostaRecuperaSenha, dados.erro)
                     } else {
-                        mostrarMensagem(erroRecuperaSenha, 'Código enviado! Verifique seu email')
+                        mostrarMensagem(respostaRecuperaSenha, 'Código enviado! Verifique seu email')
                     }
                 })
                 .catch(erro => {
                     console.log('Erro de rede: ', erro)
-                    mostrarMensagem(erroRecuperaSenha, 'Erro de conexão')
+                    mostrarMensagem(respostaRecuperaSenha, 'Erro de conexão')
                 })
         }
     })
@@ -223,7 +220,7 @@ if (btnVerificarCodigo) {
     btnVerificarCodigo.addEventListener('click', (evento) => {
         evento.preventDefault()
         if (codigo.value.length == 0) {
-            mostrarMensagem(erroRecuperaSenha, 'Digite o código!')
+            mostrarMensagem(respostaRecuperaSenha, 'Digite o código!')
         } else {
 
             fetch('/validar-codigo', {
@@ -236,9 +233,9 @@ if (btnVerificarCodigo) {
                 .then(resposta => resposta.json())
                 .then(dados => {
                     if (dados.erro) {
-                        mostrarMensagem(erroRecuperaSenha, dados.erro)
+                        mostrarMensagem(respostaRecuperaSenha, dados.erro)
                     } else {
-                        mostrarMensagem(erroRecuperaSenha, dados.mensagem)
+                        mostrarMensagem(respostaRecuperaSenha, dados.mensagem)
                         window.location = '/criar-senha'
                     }
                 })
@@ -252,9 +249,9 @@ if (btnRedefinirSenha) {
     btnRedefinirSenha.addEventListener('click', (evento) => {
         evento.preventDefault()
         if (novaSenha.value.length == 0 || confirmarNovaSenha.value.length == 0) {
-            mostrarMensagem(erroCriarNovaSenha, 'Digite nova senha!')
+            mostrarMensagem(respostaCriarNovaSenha, 'Digite nova senha!')
         } else if (novaSenha.value !== confirmarNovaSenha.value) {
-            mostrarMensagem(erroCriarNovaSenha, 'As senhas não coincidem!')
+            mostrarMensagem(respostaCriarNovaSenha, 'As senhas não coincidem!')
         } else {
             fetch('/criar-senha', {
                 method: 'POST',
@@ -266,9 +263,9 @@ if (btnRedefinirSenha) {
                 .then(resposta => resposta.json())
                 .then(dados => {
                     if (dados.erro) {
-                        mostrarMensagem(erroCriarNovaSenha, dados.erro)
+                        mostrarMensagem(respostaCriarNovaSenha, dados.erro)
                     } else {
-                        mostrarMensagem(erroCriarNovaSenha, dados.mensagem)
+                        mostrarMensagem(respostaCriarNovaSenha, dados.mensagem)
                         window.location = '/'
                     }
                 })
@@ -349,19 +346,29 @@ const barbeiros = {
 }
 
 const botoesCorte = document.querySelectorAll('[data-corte]')
+let corteSelecionado = null
 
 botoesCorte.forEach((botao) => {
-    botao.addEventListener('click', () => {
+    botao.addEventListener('click', (evento) => {
+        evento.preventDefault()
         const corteClicado = botao.getAttribute('data-corte')
-        const dadosCorte = cortes[corteClicado]
+        corteSelecionado = cortes[corteClicado]
 
-        document.getElementById('corte-nome').textContent = dadosCorte.nome
-        document.getElementById('corte-descricao').textContent = dadosCorte.descricao
-        document.getElementById('corte-preco').textContent = dadosCorte.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-        document.getElementById('corte-tempo').textContent = dadosCorte.tempo
-        document.getElementById('corte-imagem').src = dadosCorte.imagem
+        localStorage.setItem('corteSelecionado', JSON.stringify(corteSelecionado))
+        window.location = '/agendamentos'
     })
 })
+
+corteSelecionado = JSON.parse(localStorage.getItem('corteSelecionado'))
+document.getElementById('corte-nome').textContent = corteSelecionado.nome
+document.getElementById('corte-descricao').textContent = corteSelecionado.descricao
+document.getElementById('corte-preco').textContent = corteSelecionado.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+document.getElementById('corte-tempo').textContent = corteSelecionado.tempo
+document.getElementById('corte-imagem').src = corteSelecionado.imagem
+const btnVoltarDashboard = document.querySelector('button#btn-voltar-dashboard').addEventListener('click', (evento) => {
+    window.location = '/dashboard'
+})
+
 
 const select = document.getElementById('barbeiro-select')
 select.addEventListener('change', () => {
@@ -376,10 +383,10 @@ select.addEventListener('change', () => {
     document.getElementById('barbeiro-nome').textContent = dadosBarbeiro.nome
     document.getElementById('especialidade-corte').textContent = dadosBarbeiro.especialidade
     document.getElementById('barbeiro-imagem').src = dadosBarbeiro.foto
-
 })
 
 const botaoConfirmar = document.getElementById('btn-confirmar-agendamento')
+const respostaAgendamento = document.querySelector('div#erro-agendamento')
 
 botaoConfirmar.addEventListener('click', () => {
     const nomeCliente = document.querySelector('input#cliente-nome').value
@@ -389,53 +396,27 @@ botaoConfirmar.addEventListener('click', () => {
     const observacao = document.querySelector('textarea#agendamento-observacoes').value
 
     const nomeCorte = document.getElementById('corte-nome').textContent
-    const precoCorte = document.getElementById('corte-preco').textContent
     const nomeBarbeiro = document.getElementById('barbeiro-nome').textContent
 
-    const dados = {
-        nome: nomeCliente,
-        telefone: telefoneCliente,
-        data: dataAgendamento,
-        hora: horaAgendamento,
-        barbeiro: nomeBarbeiro,
-        corte: nomeCorte
-    }
-
-    const mensagem = `
-╔════════════════════════════╗
-║      CONFIRMAÇÃO DE AGENDAMENTO        ║
-╚════════════════════════════╝
-
-► Olá! Meu nome é: *${nomeCliente}*
-
-► Celular: *${telefoneCliente}*
-
-◆ DETALHES DO AGENDAMENTO ◆
-
-► Data: ${dataAgendamento}
-► Hora: ${horaAgendamento}
-
-► Serviço: *${nomeCorte}*
-► Profissional: *${nomeBarbeiro}*
-► Valor: *${precoCorte}*
-
-◆ Observação ◆
-*${observacao}*
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-✓ Aguardando confirmação!
-
-Obrigado pela preferência!
-Barbearia Morais - Excelência em Cortes`
-
-    const mensagemCodificada = encodeURIComponent(mensagem)
 
     if (nomeCliente.length == 0 || telefoneCliente.length == 0 || dataAgendamento.length == 0 || horaAgendamento.length == 0 || nomeBarbeiro.length == 0) {
         alert('😊 Ei! Parece que você deixou alguns campos em branco.\n\nPreencha tudo direitinho e tente novamente!')
         return
     } else {
-        window.open(`https://wa.me/5561998729994?text=${mensagemCodificada}`, '_blank')
-        /* fetch('/agendamentos', {
+        const dados = {
+            nome_cliente: nomeCliente,
+            whatsapp: telefoneCliente,
+            corte_nome: nomeCorte,
+            corte_descricao: corteSelecionado.descricao,
+            tempo_corte: corteSelecionado.tempo,
+            corte_preco: corteSelecionado.preco,
+            data_hora: `${dataAgendamento} ${horaAgendamento}:00`,
+            barbeiro: nomeBarbeiro,
+            observacao: observacao
+        }
+        console.log('Barbeiro: ', nomeBarbeiro)
+        console.log('Dados: ', dados)
+        fetch('/agendamentos', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -443,14 +424,19 @@ Barbearia Morais - Excelência em Cortes`
             body: JSON.stringify(dados)
         })
             .then(response => response.json())
-            .then(data => {
-                console.log('Resposta do Backend:', data);
-                alert('Agendamento salvo com sucesso!');
+            .then(dado => {
+                if (dado.erro) {
+                    mostrarMensagem(respostaAgendamento, dado.erro)
+                    console.log('Resposta do Backend:', dado);
+                } else {
+                    mostrarMensagem(respostaAgendamento, dado.mensagem)
+                    console.log('Resposta do Backend:', dado);
+                }
             })
             .catch(error => {
                 console.error('Erro:', error);
                 alert('Erro ao salvar agendamento!');
-            }); */
+            });
     }
 })
 

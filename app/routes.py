@@ -34,12 +34,16 @@ def pagina_inicial():
             if not senha_correta:
                 return jsonify({'erro': 'Senha incorreta!'}), 401
             else:
+                session['usuario_id'] = email_nao_cadastrado[0]['id']
                 return jsonify({'mensagem': 'Login realizado com sucesso!'}), 200
 
         except Exception as erro:
             return jsonify({'erro': str(erro)}), 500
     else:
         return render_template('login.html')
+
+
+""" ROTA PARA CADASTRO """
 
 
 @main_routes.route('/cadastro', methods=['GET', 'POST'])
@@ -203,11 +207,63 @@ def pagina_dashboard():
     return render_template('dashboard.html')
 
 
+@main_routes.route('/agendamentos', methods=['GET', 'POST'])
+def pagina_agendamentos():
+    if request.method == 'POST':
+        try:
+            usuario_id = session.get('usuario_id')
+            if not usuario_id:
+                return jsonify({'erro': 'Faça login para agendar!'}), 401
+
+            dados_agendamento = request.get_json()
+            dados_obrigatorios = ['nome_cliente', 'whatsapp', 'corte_nome',
+                                  'corte_descricao', 'tempo_corte', 'corte_preco', 'data_hora', 'barbeiro']
+
+            if not all(dados in dados_agendamento for dados in dados_obrigatorios):
+                return jsonify({'erro': 'Dados faltando!'}), 400
+
+            data_hora = datetime.strptime(dados_agendamento['data_hora'], '%Y-%m-%d %H:%M:%S')
+            if datetime.now() > data_hora:
+                return jsonify({'erro': 'Data incorreta!'}), 400
+            
+            minutos = int(dados_agendamento['tempo_corte'].split(' ')[0])
+            horas = minutos // 60
+            minutos_restantes = minutos % 60
+            tempo_formatado = f'{horas:02d}:{minutos_restantes:02d}:00'
+
+            horario_barbeiro = 'SELECT * FROM agendamentos WHERE barbeiro = %s AND %s < DATE_ADD(data_hora, INTERVAL tempo_corte HOUR_SECOND) AND %s >= data_hora'
+            resultado = db.obter_dados(horario_barbeiro, (dados_agendamento['barbeiro'], data_hora, data_hora,))
+            if resultado:
+                return jsonify({'erro': 'Horário ocupado'}), 401
+            else:
+                sql_agendar = """
+                INSERT INTO agendamentos(usuario_id, nome_cliente, whatsapp, corte_nome, corte_descricao, tempo_corte, corte_preco, barbeiro, data_hora, observacao)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """
+                valores = (
+                    usuario_id,
+                    dados_agendamento['nome_cliente'],
+                    dados_agendamento['whatsapp'],
+                    dados_agendamento['corte_nome'],
+                    dados_agendamento['corte_descricao'],
+                    tempo_formatado,
+                    dados_agendamento['corte_preco'],
+                    dados_agendamento['barbeiro'],
+                    data_hora,
+                    dados_agendamento.get('observacao', None)
+                )
+                agendar = db.executar_query(sql_agendar, valores)
+                if agendar:
+                    return jsonify({'mensagem': 'Agendamento realizado com sucesso!'}), 200
+                else:
+                    return jsonify({'erro': 'Agendamento não finalizado!'}), 400
+
+        except Exception as erro:
+            return jsonify({'erro': str(erro)}), 500
+    else:
+        return render_template('agendamentos.html')
+
+
 @main_routes.route('/footer')
 def pagina_footer():
     return render_template('footer.html')
-
-
-@main_routes.route('/agendamentos')
-def pagina_agendamentos():
-    return render_template('agendamentos.html')
