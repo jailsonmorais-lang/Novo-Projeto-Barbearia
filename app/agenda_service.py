@@ -43,6 +43,7 @@ print(horarios_hoje)
 def buscar_horarios_ocupados(barbeiro, data):
     consultar = 'SELECT data_hora, tempo_corte FROM agendamentos WHERE barbeiro = %s AND DATE(data_hora) = %s'
     resultado = db.obter_dados(consultar, (barbeiro, data,))
+    print('Ocupados: ', resultado)
     return resultado
 
 
