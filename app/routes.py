@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template, request, jsonify, session
 from app.models import db
+from app.agenda_service import gerar_grade_horarios
 import bcrypt
 import random
 from datetime import datetime, timedelta
 from app.email_service import enviar_email
+from app.agenda_service import horarios_livres
 
 
 # criamos um "Mapa de Rotas" (Bluerprint)
@@ -44,8 +46,6 @@ def pagina_inicial():
 
 
 """ ROTA PARA CADASTRO """
-
-
 @main_routes.route('/cadastro', methods=['GET', 'POST'])
 def pagina_cadastro():
     if request.method == 'POST':
@@ -97,8 +97,6 @@ def pagina_cadastro():
 
 
 """ ROTA PARA VALIDAR EMAIL PARA RECEBER O CÓDIGO DE RECUPERAÇÃO DE SENHA """
-
-
 @main_routes.route('/recuperacao-de-senha', methods=['GET', 'POST'])
 def pagina_recuperar_senha():
     if request.method == 'POST':
@@ -137,8 +135,6 @@ def pagina_recuperar_senha():
 
 
 """ ROTA PARA VALIDAR CÓDIGO DE RECUPERAÇÃO DE SENHA """
-
-
 @main_routes.route('/validar-codigo', methods=['GET', 'POST'])
 def validar_codigo():
     try:
@@ -262,6 +258,32 @@ def pagina_agendamentos():
             return jsonify({'erro': str(erro)}), 500
     else:
         return render_template('agendamentos.html')
+
+@main_routes.route('/consulta-horarios', methods=['GET'])
+def consultar_horarios():
+    try:
+        barbeiro = request.args.get('barbeiro')
+        data_str = request.args.get('data')
+        data = datetime.strptime(data_str, '%Y-%m-%d') # Converte string para datetime
+
+        livres = horarios_livres(barbeiro, data)
+        if not livres:
+            return jsonify({'erro': 'Barbearia fechada neste dia!'})
+        else:
+            return jsonify({'horarios': livres}), 200
+    
+    except Exception as erro:
+        return jsonify({'erro': str(erro)})
+
+
+
+
+
+
+
+
+
+
 
 
 @main_routes.route('/footer')

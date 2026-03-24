@@ -112,7 +112,7 @@ if (btnLogin) {
                     if (dados.erro) {
                         respostaLogin.innerHTML = dados.erro
                     } else {
-                        alert('Login realizado com sucesso!');
+                        mostrarMensagem(respostaLogin, 'Login realizado com sucesso!')
                         window.location = '/dashboard'
                     }
                 })
@@ -369,13 +369,54 @@ const btnVoltarDashboard = document.querySelector('button#btn-voltar-dashboard')
     window.location = '/dashboard'
 })
 
+function buscarHorarios(barbeiro, data) {
+    const grade = document.getElementById('grade-horarios')
+    fetch(`/consulta-horarios?barbeiro=${barbeiro}&data=${data}`, {
+        method: 'GET',
+    })
+        .then(resposta => resposta.json())
+        .then(dado => {
+            if (dado.erro) {
+                mostrarMensagem(respostaAgendamento, dado.erro)
+                console.log('Resposta do Backend:', dado)
+                grade.innerHTML = ''
+            } else {
+                respostaAgendamento.innerHTML = ''
+                grade.innerHTML = ''
+                dado.horarios.forEach(horario => {
+                    const btn = document.createElement('button')
+                    btn.textContent = horario
+                    btn.onclick = () => {
+                        document.querySelectorAll('#grade-horarios button').forEach(b => {
+                            b.classList.remove('horario-selecionado')
+                        })
+                        btn.classList.add('horario-selecionado')
+                        horarioSelecionado = horario // Guarda o horário escolhido
+                    }
+                    grade.appendChild(btn)
+                })
+                console.log('Resposta do Backend:', dado)
+            }
+        })
+}
+
+let horarioSelecionado = null
+document.getElementById('agendamento-data').addEventListener('change', () => {
+    const barbeiro = document.getElementById('barbeiro-select').value
+    const data = document.getElementById('agendamento-data').value
+
+    if (barbeiro && data) {
+        buscarHorarios(barbeiro, data)
+    }
+})
 
 const select = document.getElementById('barbeiro-select')
 select.addEventListener('change', () => {
-    const barbeiroSelecionado = select.value
+    const barbeiroSelecionado = document.getElementById('barbeiro-select').value
+    const data = document.getElementById('agendamento-data').value
 
-    if (barbeiroSelecionado === '') {
-        return
+    if (data && barbeiroSelecionado) {
+        buscarHorarios(barbeiroSelecionado, data)
     }
 
     const dadosBarbeiro = barbeiros[barbeiroSelecionado]
@@ -392,14 +433,13 @@ botaoConfirmar.addEventListener('click', () => {
     const nomeCliente = document.querySelector('input#cliente-nome').value
     const telefoneCliente = document.querySelector('input#cliente-telefone').value
     const dataAgendamento = document.querySelector('input#agendamento-data').value
-    const horaAgendamento = document.querySelector('input#agendamento-hora').value
     const observacao = document.querySelector('textarea#agendamento-observacoes').value
 
     const nomeCorte = document.getElementById('corte-nome').textContent
     const nomeBarbeiro = document.getElementById('barbeiro-nome').textContent
 
 
-    if (nomeCliente.length == 0 || telefoneCliente.length == 0 || dataAgendamento.length == 0 || horaAgendamento.length == 0 || nomeBarbeiro.length == 0) {
+    if (nomeCliente.length == 0 || telefoneCliente.length == 0 || dataAgendamento.length == 0 || !horarioSelecionado || nomeBarbeiro.length == 0) {
         alert('😊 Ei! Parece que você deixou alguns campos em branco.\n\nPreencha tudo direitinho e tente novamente!')
         return
     } else {
@@ -410,7 +450,7 @@ botaoConfirmar.addEventListener('click', () => {
             corte_descricao: corteSelecionado.descricao,
             tempo_corte: corteSelecionado.tempo,
             corte_preco: corteSelecionado.preco,
-            data_hora: `${dataAgendamento} ${horaAgendamento}:00`,
+            data_hora: `${dataAgendamento} ${horarioSelecionado}:00`,
             barbeiro: nomeBarbeiro,
             observacao: observacao
         }
@@ -439,4 +479,3 @@ botaoConfirmar.addEventListener('click', () => {
             });
     }
 })
-

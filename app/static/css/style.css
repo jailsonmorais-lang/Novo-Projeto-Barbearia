@@ -1175,3 +1175,15 @@ div#foto-do-barbeiro-selecionado img.img-barbeiro::before {
     object-fit: cover;
     display: block;
 }
+
+#grade-horarios {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 20px 0;
+}
+
+#grade-horarios button.horario-selecionado {
+    background-color: var(--roxo-principal);
+    border: 2px solid white;
+}
