@@ -370,43 +370,45 @@ const btnVoltarDashboard = document.querySelector('button#btn-voltar-dashboard')
 })
 
 function buscarHorarios(barbeiro, data) {
+    const duracao = corteSelecionado.tempo.split(' ')[0]
     const grade = document.getElementById('grade-horarios')
-    fetch(`/consulta-horarios?barbeiro=${barbeiro}&data=${data}`, {
+    fetch(`/consulta-horarios?barbeiro=${barbeiro}&data=${data}&duracao=${duracao}`, {
         method: 'GET',
     })
-        .then(resposta => resposta.json())
-        .then(dado => {
-            if (dado.erro) {
-                mostrarMensagem(respostaAgendamento, dado.erro)
-                console.log('Resposta do Backend:', dado)
-                grade.innerHTML = ''
-            } else {
-                respostaAgendamento.innerHTML = ''
-                grade.innerHTML = ''
-                dado.horarios.forEach(horario => {
-                    const btn = document.createElement('button')
-                    btn.textContent = horario
-                    btn.onclick = () => {
-                        document.querySelectorAll('#grade-horarios button').forEach(b => {
-                            b.classList.remove('horario-selecionado')
-                        })
-                        btn.classList.add('horario-selecionado')
-                        horarioSelecionado = horario // Guarda o horário escolhido
-                    }
-                    grade.appendChild(btn)
-                })
-                console.log('Resposta do Backend:', dado)
-            }
-        })
+    .then(resposta => resposta.json())
+    .then(dado => {
+        if (dado.erro) {
+            mostrarMensagem(respostaAgendamento, dado.erro)
+            console.log('Resposta do Backend:', dado)
+            grade.innerHTML = ''
+        } else {
+            respostaAgendamento.innerHTML = ''
+            grade.innerHTML = ''
+            dado.horarios.forEach(horario => {
+                const btn = document.createElement('button')
+                btn.textContent = horario
+                btn.onclick = () => {
+                    document.querySelectorAll('#grade-horarios button').forEach(b => {
+                        b.classList.remove('horario-selecionado')
+                    })
+                    btn.classList.add('horario-selecionado')
+                    horarioSelecionado = horario // Guarda o horário escolhido
+                }
+                grade.appendChild(btn)
+            })
+            console.log('Resposta do Backend:', dado)
+        }
+    })
 }
 
 let horarioSelecionado = null
 document.getElementById('agendamento-data').addEventListener('change', () => {
     const barbeiro = document.getElementById('barbeiro-select').value
     const data = document.getElementById('agendamento-data').value
-
+    const duracao = corteSelecionado.tempo.split(' ')[0]
+    
     if (barbeiro && data) {
-        buscarHorarios(barbeiro, data)
+        buscarHorarios(barbeiro, data, duracao)
     }
 })
 

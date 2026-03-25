@@ -47,26 +47,27 @@ def buscar_horarios_ocupados(barbeiro, data):
     return resultado
 
 
-def horarios_livres(barbeiro, data):
+def horarios_livres(barbeiro, data, duracao):
     # lista de strings ['08:00', '08:30'...]
     todos = gerar_grade_horarios(data)
     ocupados = buscar_horarios_ocupados(
         barbeiro, data)   # lista de dicts do banco
-    
+
     livres = todos.copy()  # copia a lista para não modificar o original
 
     for agendamento in ocupados:
-        inicio = agendamento['data_hora']   # datetime
+        inicio_existente = agendamento['data_hora']   # datetime
         # converte tempo_corte '01:00:00' para timedelta
         h, m, s = str(agendamento['tempo_corte']).split(':')
-        duracao = timedelta(hours=int(h), minutes=int(m))
-        fim = inicio + duracao
+        duracao_existente = timedelta(hours=int(h), minutes=int(m))
+        fim_existente = inicio_existente + duracao_existente
 
         for horario in todos:
             # Converte '09:00' para datetime para comparar
-            horario_dt = datetime.strptime(horario, '%H:%M').replace(
+            novo_horario = datetime.strptime(horario, '%H:%M').replace(
                 year=data.year, month=data.month, day=data.day)
-            if horario_dt >= inicio and horario_dt < fim:
+            fim_novo = novo_horario + timedelta(minutes=int(duracao))
+            if (novo_horario >= inicio_existente and novo_horario < fim_existente) or (fim_novo > inicio_existente and novo_horario < inicio_existente):
                 if horario in livres:
                     livres.remove(horario)
     return livres

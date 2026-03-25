@@ -264,9 +264,10 @@ def consultar_horarios():
     try:
         barbeiro = request.args.get('barbeiro')
         data_str = request.args.get('data')
+        duracao = request.args.get('duracao')
         data = datetime.strptime(data_str, '%Y-%m-%d') # Converte string para datetime
 
-        livres = horarios_livres(barbeiro, data)
+        livres = horarios_livres(barbeiro, data, duracao)
         if not livres:
             return jsonify({'erro': 'Barbearia fechada neste dia!'})
         else:
