@@ -34,8 +34,7 @@ class Database:
         escreva = self.connection.cursor()
         escreva.execute(query, valores)
         self.connection.commit()
-        return True
-    """ escreva.lastrowid if escreva.lastrowid else """
+        return escreva.lastrowid if escreva.lastrowid else True
 
 db = Database()
     

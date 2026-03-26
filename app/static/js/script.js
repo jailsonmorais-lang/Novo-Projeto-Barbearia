@@ -442,7 +442,7 @@ botaoConfirmar.addEventListener('click', () => {
 
 
     if (nomeCliente.length == 0 || telefoneCliente.length == 0 || dataAgendamento.length == 0 || !horarioSelecionado || nomeBarbeiro.length == 0) {
-        alert('😊 Ei! Parece que você deixou alguns campos em branco.\n\nPreencha tudo direitinho e tente novamente!')
+        alert('😊 Ei! Parece que você deixou alguns campos em branco.\nPreencha tudo direitinho e tente novamente!')
         return
     } else {
         const dados = {
@@ -472,7 +472,7 @@ botaoConfirmar.addEventListener('click', () => {
                     console.log('Resposta do Backend:', dado);
                 } else {
                     mostrarMensagem(respostaAgendamento, dado.mensagem)
-                    console.log('Resposta do Backend:', dado);
+                    console.log('Resposta do Backend:', dado.id);
                 }
             })
             .catch(error => {

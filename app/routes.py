@@ -6,7 +6,7 @@ import random
 from datetime import datetime, timedelta
 from app.email_service import enviar_email
 from app.agenda_service import horarios_livres
-
+import pytz
 
 # criamos um "Mapa de Rotas" (Bluerprint)
 main_routes = Blueprint('main', __name__)
@@ -218,9 +218,15 @@ def pagina_agendamentos():
             if not all(dados in dados_agendamento for dados in dados_obrigatorios):
                 return jsonify({'erro': 'Dados faltando!'}), 400
 
+            fuso_brasilia = pytz.timezone('America/Sao_Paulo')
+            agora = datetime.now(fuso_brasilia)
+
             data_hora = datetime.strptime(dados_agendamento['data_hora'], '%Y-%m-%d %H:%M:%S')
-            if datetime.now() > data_hora:
-                return jsonify({'erro': 'Data incorreta!'}), 400
+            data_hora = fuso_brasilia.localize(data_hora)
+
+
+            if agora > data_hora:
+                return jsonify({'erro': 'Não é possível agendar para datas/horários passados!'}), 400
             
             minutos = int(dados_agendamento['tempo_corte'].split(' ')[0])
             horas = minutos // 60
@@ -250,7 +256,7 @@ def pagina_agendamentos():
                 )
                 agendar = db.executar_query(sql_agendar, valores)
                 if agendar:
-                    return jsonify({'mensagem': 'Agendamento realizado com sucesso!'}), 200
+                    return jsonify({'mensagem': 'Agendamento realizado com sucesso!', 'id': agendar}), 200
                 else:
                     return jsonify({'erro': 'Agendamento não finalizado!'}), 400
 
