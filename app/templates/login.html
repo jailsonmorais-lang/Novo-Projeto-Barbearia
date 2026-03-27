@@ -4,7 +4,7 @@
 <div class="logo">
     <img src="{{ url_for('static', filename='assets/logo.inicial.webp') }}" alt="logo" loading="lazy">
 </div>
-<h1 class="titulo-principal">Barbearia Morais</h1>
+<h1 class="titulo-principal">BarberBook</h1>
 <section>
     <div class="div-section">
         <h2 class="titulo-secundario">Faça seu Login</h2>
@@ -14,30 +14,39 @@
                     <label for="email-login" class="label">Email </label>
                     <div class="logar">
                         <img src="{{ url_for('static', filename='assets/email.svg') }}" alt="email" class="icone"
-                        loading="lazy">
-                        <input type="email" name="email-login" id="email-login" placeholder="exemplo@exemplo.com" required>
+                            loading="lazy">
+                        <input type="email" name="email-login" id="email-login" placeholder="exemplo@exemplo.com"
+                            required>
                     </div>
                     <label for="password-login" class="label">Senha </label>
                     <div class="logar">
-                        <img src="{{ url_for('static', filename='assets/password.svg') }}" alt="Senha-login" class="icone"
-                        loading="lazy">
-                        <input type="password" name="password-login" id="password-login" placeholder="**********" required>
+                        <img src="{{ url_for('static', filename='assets/password.svg') }}" alt="Senha-login"
+                            class="icone" loading="lazy">
+                        <input type="password" name="password-login" id="password-login" placeholder="**********"
+                            required>
                         <button type="button" class="btn-mostrar-senha" id="btn-mostrar-senha-login">
-                        <img id="icone-olho-login" src="{{ url_for('static', filename='assets/olho-fechado.svg') }}"
-                        alt="mostrar senha" class="icone" loading="lazy">
-                    </button>
-                </div>
-                <div id="cadastreSe">
-                    <p>Não tem conta? <a href="{{ url_for('main.pagina_cadastro') }}">Cadastre-se</a></p>
-                    <a href="{{ url_for('main.pagina_recuperar_senha') }}">Esqueci a senha</a>
-                </div>
-                <div id="erro-login" class="erro">
-                    
-                </div>
-                <div class="botao-login">
-                    <button id="btn-login" type="submit">Login</button>
-                </div>
-            </form>
+                            <img id="icone-olho-login" src="{{ url_for('static', filename='assets/olho-fechado.svg') }}"
+                                alt="mostrar senha" class="icone" loading="lazy">
+                        </button>
+                    </div>
+                    <div id="cadastreSe">
+                        <p>Não tem conta? <a href="{{ url_for('main.pagina_cadastro') }}">Cadastre-se</a></p>
+                        <a href="{{ url_for('main.pagina_recuperar_senha') }}">Esqueci a senha</a>
+                    </div>
+                    <div id="erro-login" class="erro">
+
+                    </div>
+                    <div id="login-google">
+                        <a class="sparkle-button" href="/login/google">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                                alt="Google Logo">
+                            Entrar com Google</a>
+                    </div>
+
+                    <div class="botao-login">
+                        <button id="btn-login" type="submit">Login</button>
+                    </div>
+                </form>
             </div>
         </form>
     </div>

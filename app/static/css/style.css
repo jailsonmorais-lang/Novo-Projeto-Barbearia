@@ -110,6 +110,7 @@ body {
     font-size: 1.8rem;
     font-weight: 600;
     margin-bottom: 10px;
+    padding-top: 20px;
     color: var(--texto-secundario);
     text-shadow: 0px 2px 6px var(--roxo-principal);
 }
@@ -738,7 +739,8 @@ div.div-section-agendamentos button#btn-voltar-dashboard:active {
     }
 
     .cortes-text-cards {
-        height: 300px; /* Desktop */
+        height: 300px;
+        /* Desktop */
     }
 }
 
@@ -1134,7 +1136,7 @@ section.secao-barbeiro div#dados-do-barbeiro-selecionado {
     align-items: center;
     width: 90%;
     max-width: 300px;
-    margin: 20px 10px;  
+    margin: 20px 10px;
     background: rgba(38, 38, 37, 0.769);
     border-radius: 35px 10px 35px 10px;
     padding: 10px;
@@ -1186,4 +1188,70 @@ div#foto-do-barbeiro-selecionado img.img-barbeiro::before {
 #grade-horarios button.horario-selecionado {
     background-color: var(--roxo-principal);
     border: 2px solid white;
+}
+
+#login-google {
+    display: flex;
+    margin: 0 auto;
+    position: static;
+    left: 0;
+}
+
+.sparkle-button {
+    --active: 0;
+    --bg: radial-gradient(40% 50% at center 100%,
+            hsl(270 calc(var(--active) * 97%) 72% / var(--active)),
+            transparent),
+        radial-gradient(80% 100% at center 120%,
+            hsl(260 calc(var(--active) * 97%) 70% / var(--active)),
+            transparent),
+        hsl(260 calc(var(--active) * 97%) calc((var(--active) * 44%) + 12%));
+    background: var(--bg);
+    font-size: 1rem;
+    font-weight: 500;
+    border: 0;
+    cursor: pointer;
+    padding: 0.5em 0.5em;
+    width: 180px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.25em;
+    white-space: nowrap;
+    border-radius: 100px;
+/*     position: relative;
+    left: 170px; */
+    box-shadow: 0 0 calc(var(--active) * 3em) calc(var(--active) * 1em) hsl(260 97% 61% / 0.75),
+        0 0em 0 0 hsl(260 calc(var(--active) * 97%) calc((var(--active) * 50%) + 30%)) inset,
+        0 -0.05em 0 0 hsl(260 calc(var(--active) * 97%) calc(var(--active) * 60%)) inset;
+    transition: box-shadow var(--transition), scale var(--transition), background var(--transition);
+    scale: calc(1 + (var(--active) * 0.1));
+    transition: .3s;
+}
+
+.sparkle-button:active {
+    scale: 0.5;
+    transition: .3s;
+}
+
+.sparkle-button:before {
+    content: "";
+    position: absolute;
+    inset: -0.2em;
+    z-index: -1;
+    border: 0.25em solid hsl(260 97% 50% / 0.5);
+    border-radius: 100px;
+    opacity: var(--active, 0);
+    transition: opacity var(--transition);
+}
+
+.sparkle-button:is(:hover, :focus-visible)~ :is(.bodydrop, .particle-pen) {
+    --active: 0.5;
+    --play-state: runnin;
+}
+
+.sparkle-button:is(:hover, :focus-visible) {
+    --active: 0.5;
+    --play-state: running;
 }

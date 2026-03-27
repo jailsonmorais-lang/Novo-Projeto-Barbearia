@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify, session
+from flask import Blueprint, render_template, request, jsonify, session, redirect
 from app.models import db
 from app.agenda_service import gerar_grade_horarios
 import bcrypt
@@ -7,9 +7,58 @@ from datetime import datetime, timedelta
 from app.email_service import enviar_email
 from app.agenda_service import horarios_livres
 import pytz
+from flask_dance.contrib.google import make_google_blueprint, google
+from flask_dance.consumer import oauth_authorized
+import os
 
 # criamos um "Mapa de Rotas" (Bluerprint)
 main_routes = Blueprint('main', __name__)
+
+google_blueprint = make_google_blueprint(
+    client_id=os.getenv('GOOGLE_CLIENT_ID'),
+    client_secret=os.getenv('GOOGLE_CLIENT_SECRET'),
+    scope=['https://www.googleapis.com/auth/userinfo.email',
+           'https://www.googleapis.com/auth/userinfo.profile',
+           'openid'],
+    redirect_to='main.google_login'
+)
+
+
+@main_routes.route('/google/sucesso')
+def google_login():
+    try:
+        if not google.authorized:
+            return redirect('/')
+
+        info = google.get('/oauth2/v2/userinfo')
+        dados = info.json()
+
+        email = dados['email']
+        nome = dados['name']
+
+        verifica_email = 'SELECT * FROM usuarios WHERE email = %s'
+        usuario = db.obter_dados(verifica_email, (email,))
+
+        if not usuario:
+            sql_guardar_dados = """
+        INSERT INTO usuarios (nome, email, senha, whatsapp)
+        VALUES (%s, %s, %s, %s)
+        """
+            valores = (
+                nome,
+                email,
+                'GOOGLE_AUTH',
+                ''
+            )
+            resultado = db.executar_query(sql_guardar_dados, valores)
+            session['usuario_id'] = resultado
+            return redirect('/dashboard')
+        else:
+            session['usuario_id'] = usuario[0]['id']
+            return redirect('/dashboard')
+
+    except Exception as erro:
+        return jsonify({'erro': str(erro)}), 500
 
 
 @main_routes.route('/', methods=['GET', 'POST'])
@@ -46,6 +95,8 @@ def pagina_inicial():
 
 
 """ ROTA PARA CADASTRO """
+
+
 @main_routes.route('/cadastro', methods=['GET', 'POST'])
 def pagina_cadastro():
     if request.method == 'POST':
@@ -97,6 +148,8 @@ def pagina_cadastro():
 
 
 """ ROTA PARA VALIDAR EMAIL PARA RECEBER O CÓDIGO DE RECUPERAÇÃO DE SENHA """
+
+
 @main_routes.route('/recuperacao-de-senha', methods=['GET', 'POST'])
 def pagina_recuperar_senha():
     if request.method == 'POST':
@@ -135,6 +188,8 @@ def pagina_recuperar_senha():
 
 
 """ ROTA PARA VALIDAR CÓDIGO DE RECUPERAÇÃO DE SENHA """
+
+
 @main_routes.route('/validar-codigo', methods=['GET', 'POST'])
 def validar_codigo():
     try:
@@ -221,20 +276,21 @@ def pagina_agendamentos():
             fuso_brasilia = pytz.timezone('America/Sao_Paulo')
             agora = datetime.now(fuso_brasilia)
 
-            data_hora = datetime.strptime(dados_agendamento['data_hora'], '%Y-%m-%d %H:%M:%S')
+            data_hora = datetime.strptime(
+                dados_agendamento['data_hora'], '%Y-%m-%d %H:%M:%S')
             data_hora = fuso_brasilia.localize(data_hora)
-
 
             if agora > data_hora:
                 return jsonify({'erro': 'Não é possível agendar para datas/horários passados!'}), 400
-            
+
             minutos = int(dados_agendamento['tempo_corte'].split(' ')[0])
             horas = minutos // 60
             minutos_restantes = minutos % 60
             tempo_formatado = f'{horas:02d}:{minutos_restantes:02d}:00'
 
             horario_barbeiro = 'SELECT * FROM agendamentos WHERE barbeiro = %s AND %s < DATE_ADD(data_hora, INTERVAL tempo_corte HOUR_SECOND) AND %s >= data_hora'
-            resultado = db.obter_dados(horario_barbeiro, (dados_agendamento['barbeiro'], data_hora, data_hora,))
+            resultado = db.obter_dados(
+                horario_barbeiro, (dados_agendamento['barbeiro'], data_hora, data_hora,))
             if resultado:
                 return jsonify({'erro': 'Horário ocupado'}), 401
             else:
@@ -265,32 +321,24 @@ def pagina_agendamentos():
     else:
         return render_template('agendamentos.html')
 
+
 @main_routes.route('/consulta-horarios', methods=['GET'])
 def consultar_horarios():
     try:
         barbeiro = request.args.get('barbeiro')
         data_str = request.args.get('data')
         duracao = request.args.get('duracao')
-        data = datetime.strptime(data_str, '%Y-%m-%d') # Converte string para datetime
+        # Converte string para datetime
+        data = datetime.strptime(data_str, '%Y-%m-%d')
 
         livres = horarios_livres(barbeiro, data, duracao)
         if not livres:
             return jsonify({'erro': 'Barbearia fechada neste dia!'})
         else:
             return jsonify({'horarios': livres}), 200
-    
+
     except Exception as erro:
         return jsonify({'erro': str(erro)})
-
-
-
-
-
-
-
-
-
-
 
 
 @main_routes.route('/footer')
