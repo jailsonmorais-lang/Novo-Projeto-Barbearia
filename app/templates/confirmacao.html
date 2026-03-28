@@ -1,12 +1,87 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div id="confirmacao-container">
+    <div class="confirmacao-card">
 
-<label>Informações do Agendamento</label>
-<div id="card-confirmacao">
-    <div id="erro-confirmacao">
-        
+        <div class="confirmacao-header">
+            <div class="check-icon">✓</div>
+            <h1>Agendamento Confirmado!</h1>
+            <p class="subtitulo">Seu horário foi reservado com sucesso</p>
+        </div>
+
+        <div class="confirmacao-body">
+
+            <div class="info-row">
+                <span class="info-label">👤 Cliente</span>
+                <span class="info-valor">{{ agendamento.nome_cliente }}</span>
+            </div>
+
+            <div class="divisor"></div>
+
+            <div class="info-row">
+                <span class="info-label">✂️ Serviço</span>
+                <span class="info-valor">{{ agendamento.corte_nome }}</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">📝 Descrição</span>
+                <span class="info-valor">{{ agendamento.corte_descricao }}</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">⏱️ Duração</span>
+                <span class="info-valor">
+                    {% set total = agendamento.tempo_corte.total_seconds() | int %}
+                    {% set horas = total // 3600 %}
+                    {% set minutos = (total % 3600) // 60 %}
+                    {% if horas > 0 %}
+                        {{ horas }}h {{ minutos }}min
+                    {% else %}
+                        {{ minutos }} min
+                    {% endif %}
+                </span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">💰 Valor</span>
+                <span class="info-valor destaque-preco">R$ {{ "%.2f"|format(agendamento.corte_preco) }}</span>
+            </div>
+
+            <div class="divisor"></div>
+
+            <div class="info-row">
+                <span class="info-label">👨‍💈 Barbeiro</span>
+                <span class="info-valor">{{ agendamento.barbeiro }}</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">📅 Data</span>
+                <span class="info-valor">{{ agendamento.data_hora.strftime('%d/%m/%Y') }}</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">🕐 Horário</span>
+                <span class="info-valor">{{ agendamento.data_hora.strftime('%H:%M') }}</span>
+            </div>
+
+            {% if agendamento.observacao %}
+            <div class="divisor"></div>
+            <div class="info-row">
+                <span class="info-label">💬 Observação</span>
+                <span class="info-valor">{{ agendamento.observacao }}</span>
+            </div>
+            {% endif %}
+
+        </div>
+
+        <div class="confirmacao-footer">
+            <p class="aviso">📱 Anote seu horário! Cancelamentos devem ser feitos com 2h de antecedência.</p>
+            <button onclick="window.location='/dashboard'" class="btn-voltar">
+                Voltar ao Início
+            </button>
+        </div>
+
     </div>
 </div>
-
 {% endblock %}

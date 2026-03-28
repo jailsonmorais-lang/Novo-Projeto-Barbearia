@@ -473,6 +473,7 @@ botaoConfirmar.addEventListener('click', () => {
                 } else {
                     mostrarMensagem(respostaAgendamento, dado.mensagem)
                     console.log('Resposta do Backend:', dado.id);
+                    window.location = `/confirmacao?id=${dado.id}`
                 }
             })
             .catch(error => {
@@ -481,3 +482,4 @@ botaoConfirmar.addEventListener('click', () => {
             });
     }
 })
+

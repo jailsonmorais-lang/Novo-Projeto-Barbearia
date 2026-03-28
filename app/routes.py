@@ -100,8 +100,6 @@ def pagina_inicial():
 
 
 """ ROTA PARA CADASTRO """
-
-
 @main_routes.route('/cadastro', methods=['GET', 'POST'])
 def pagina_cadastro():
     if request.method == 'POST':
@@ -153,8 +151,6 @@ def pagina_cadastro():
 
 
 """ ROTA PARA VALIDAR EMAIL PARA RECEBER O CÓDIGO DE RECUPERAÇÃO DE SENHA """
-
-
 @main_routes.route('/recuperacao-de-senha', methods=['GET', 'POST'])
 def pagina_recuperar_senha():
     if request.method == 'POST':
@@ -193,8 +189,6 @@ def pagina_recuperar_senha():
 
 
 """ ROTA PARA VALIDAR CÓDIGO DE RECUPERAÇÃO DE SENHA """
-
-
 @main_routes.route('/validar-codigo', methods=['GET', 'POST'])
 def validar_codigo():
     try:
@@ -227,8 +221,6 @@ def validar_codigo():
 
 
 """ ROTA PARA CRIAR NOVA SENHA """
-
-
 @main_routes.route('/criar-senha', methods=['GET', 'POST'])
 def pagina_criar_senha():
     if request.method == 'POST':
@@ -294,8 +286,7 @@ def pagina_agendamentos():
             tempo_formatado = f'{horas:02d}:{minutos_restantes:02d}:00'
 
             horario_barbeiro = 'SELECT * FROM agendamentos WHERE barbeiro = %s AND %s < DATE_ADD(data_hora, INTERVAL tempo_corte HOUR_SECOND) AND %s >= data_hora'
-            resultado = db.obter_dados(
-                horario_barbeiro, (dados_agendamento['barbeiro'], data_hora, data_hora,))
+            resultado = db.obter_dados(horario_barbeiro, (dados_agendamento['barbeiro'], data_hora, data_hora,))
             if resultado:
                 return jsonify({'erro': 'Horário ocupado'}), 401
             else:
@@ -344,6 +335,25 @@ def consultar_horarios():
 
     except Exception as erro:
         return jsonify({'erro': str(erro)})
+    
+
+@main_routes.route('/confirmacao', methods=['GET'])
+def confirmacao():
+    try:
+        id_usuario = request.args.get('id')
+        id_confirmacao = 'SELECT * FROM agendamentos WHERE id = %s'
+
+        resultado = db.obter_dados(id_confirmacao, (id_usuario,))
+
+        return render_template('confirmacao.html', agendamento = resultado[0])
+    
+
+
+
+
+    except Exception as erro:
+        return jsonify({'erro': str(erro)})
+
 
 
 @main_routes.route('/footer')
