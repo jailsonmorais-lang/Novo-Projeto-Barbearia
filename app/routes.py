@@ -20,8 +20,7 @@ google_blueprint = make_google_blueprint(
     scope=['https://www.googleapis.com/auth/userinfo.email',
            'https://www.googleapis.com/auth/userinfo.profile',
            'openid'],
-    redirect_to='main.google_login',
-    redirect_url='https://barberbook-development.up.railway.app/login/google/authorized'
+    redirect_to='main.google_login'
 )
 
 
