@@ -23,6 +23,10 @@ google_blueprint = make_google_blueprint(
     redirect_to='main.google_login'
 )
 
+@main_routes.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/')
 
 @main_routes.route('/google/sucesso')
 def google_login():
@@ -64,6 +68,7 @@ def google_login():
 @main_routes.route('/', methods=['GET', 'POST'])
 def pagina_inicial():
     if request.method == 'POST':
+        print("🔍 DEBUG: Login normal foi chamado!")
         try:
             dados_login = request.get_json()
             dados_obrigatorios = ['email', 'senha']
