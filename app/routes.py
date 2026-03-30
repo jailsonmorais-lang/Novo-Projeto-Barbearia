@@ -346,15 +346,42 @@ def confirmacao():
         resultado = db.obter_dados(id_confirmacao, (id_usuario,))
 
         return render_template('confirmacao.html', agendamento = resultado[0])
-    
-
-
-
-
     except Exception as erro:
         return jsonify({'erro': str(erro)})
 
+@main_routes.route('/meus-agendamentos', methods=['GET'])
+def meus_agendamentos():
+    try:
+        id_usuario = session.get('usuario_id')
+        agendamentos = '''
+        SELECT * FROM agendamentos
+        WHERE usuario_id = %s
+        ORDER BY data_hora DESC
+        LIMIT 5
+        '''
+        resultado = db.obter_dados(agendamentos, (id_usuario,))
+        for ag in resultado:
+            fim = ag['data_hora'] + ag['tempo_corte']
+            if datetime.now() > fim:
+                ag['status_calculado'] = 'concluido'
+            else:
+                ag['status_calculado'] = ag['status']
+            
+            total = int(ag['tempo_corte'].total_seconds())
+            horas = total // 3600
+            minutos = (total % 3600) // 60
+            if horas > 0 and minutos > 0:
+                tempo_formatado = f'{horas}h {minutos:02d}min'
+            elif horas > 0 and minutos == 0:
+                tempo_formatado = f'{horas:01d}h'
+            elif horas == 0:
+                tempo_formatado = f'{minutos:02d}min'
+            ag['tempo_formatado'] = tempo_formatado
 
+        return render_template('meus-agendamentos.html', agendamento = resultado)
+
+    except Exception as erro:
+        return jsonify({'erro': str(erro)})
 
 @main_routes.route('/footer')
 def pagina_footer():

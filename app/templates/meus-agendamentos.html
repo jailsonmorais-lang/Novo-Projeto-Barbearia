@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="meus-agendamentos-container">
+    <h1 class="titulo-agendamentos">Meus Agendamentos</h1>
+
+    {% if not agendamento %}
+        <p class="sem-agendamentos">Você não tem agendamentos ainda.</p>
+    {% endif %}
+
+    {% for ag in agendamento %}
+    <div class="card-agendamento">
+
+        <div class="card-resumo">
+            <div class="resumo-info">
+                <span class="resumo-data">📅 {{ ag.data_hora.strftime('%d/%m/%Y às %H:%M') }}</span>
+                <span class="resumo-barbeiro">👨‍💈 {{ ag.barbeiro }}</span>
+            </div>
+            <div class="resumo-direita">
+                <span class="resumo-preco">R$ {{ "%.2f"|format(ag.corte_preco) }}</span>
+                <span class="resumo-status status-{{ ag.status_calculado }}">{{ ag.status_calculado }}</span>
+            </div>
+            <span class="seta">▼</span>
+        </div>
+
+        <div class="card-detalhes">
+            <div class="divisor"></div>
+
+            <div class="info-row-meus-agendamentos">
+                <span class="info-label">✂️ Serviço</span>
+                <span class="info-valor">{{ ag.corte_nome }}</span>
+            </div>
+            <div class="info-row-meus-agendamentos">
+                <span class="info-label">📝 Descrição</span>
+                <span class="info-valor">{{ ag.corte_descricao }}</span>
+            </div>
+            <div class="info-row-meus-agendamentos">
+                <span class="info-label">⏱️ Duração</span>
+                <span class="info-valor">{{ ag.tempo_formatado }}</span>
+            </div>
+            <div class="info-row-meus-agendamentos">
+                <span class="info-label">💰 Valor</span>
+                <span class="info-valor destaque-preco">R$ {{ "%.2f"|format(ag.corte_preco) }}</span>
+            </div>
+            {% if ag.observacao %}
+            <div class="info-row-meus-agendamentos">
+                <span class="info-label">💬 Observação</span>
+                <span class="info-valor">{{ ag.observacao }}</span>
+            </div>
+            {% endif %}
+
+            {% if ag.status_calculado == 'confirmado' %}
+            <div class="card-acoes">
+                <button id="btn-cancelar" data-id="{{ ag.id }}">
+                    Cancelar Agendamento
+                </button>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

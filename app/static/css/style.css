@@ -1256,18 +1256,6 @@ div#foto-do-barbeiro-selecionado img.img-barbeiro::before {
     --play-state: running;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 /* ===== TELA DE CONFIRMAÇÃO ===== */
 
 #confirmacao-container {
@@ -1403,4 +1391,152 @@ div#foto-do-barbeiro-selecionado img.img-barbeiro::before {
 .btn-voltar:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(138, 43, 226, 0.4);
+}
+
+/* ===== TELA DE MEUS AGENDAMENTOS ===== */
+#meus-agendamentos-container {
+    padding: 2rem 1rem;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.titulo-agendamentos {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.sem-agendamentos {
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    margin-top: 3rem;
+}
+
+/* CARD */
+.card-agendamento {
+    background: linear-gradient(145deg, #1A1A2E, #16213E);
+    border: 1px solid rgba(138, 43, 226, 0.3);
+    border-radius: 16px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease;
+}
+
+.card-agendamento:hover {
+    box-shadow: 0 4px 30px rgba(138, 43, 226, 0.2);
+}
+
+/* RESUMO */
+.card-resumo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    gap: 0.5rem;
+}
+
+.resumo-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.resumo-data {
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.resumo-barbeiro {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.8rem;
+}
+
+.resumo-direita {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.3rem;
+}
+
+.resumo-preco {
+    color: #9B30FF;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.resumo-status {
+    font-size: 0.85rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.status-confirmado {
+    background: rgba(29, 158, 177, 0.2);
+    color: #1D9E75;
+}
+
+.status-concluido {
+    background: rgba(138, 43, 226, 0.2);
+    color: #9B30FF;
+}
+
+.status-cancelado {
+    background: rgba(226, 75, 74, 0.2);
+    color: #e24b4a;
+}
+
+.seta {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+}
+
+.card-agendamento.aberto .seta {
+    transform: rotate(180deg);
+}
+
+/* DETALHES */
+.card-detalhes {
+    display: none;
+    padding: 0 1.2rem 1.2rem;
+}
+
+.card-agendamento.aberto .card-detalhes {
+    display: block;
+}
+
+.info-row-meus-agendamentos {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0.6rem 0;
+    gap: 1rem;
+}
+
+/* BOTÃO CANCELAR */
+.card-acoes {
+    margin-top: 1rem;
+}
+
+#btn-cancelar {
+    width: 100%;
+    padding: 0.75rem;
+    background: rgba(226, 75, 74, 0.1);
+    border: 1px solid rgba(226, 75, 74, 0.4);
+    border-radius: 10px;
+    color: #E24B4A;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#btn-cancelar:hover {
+    background: rgba(266, 75, 74, 0.2);
 }

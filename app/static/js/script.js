@@ -358,128 +358,136 @@ botoesCorte.forEach((botao) => {
         window.location = '/agendamentos'
     })
 })
-
-corteSelecionado = JSON.parse(localStorage.getItem('corteSelecionado'))
-document.getElementById('corte-nome').textContent = corteSelecionado.nome
-document.getElementById('corte-descricao').textContent = corteSelecionado.descricao
-document.getElementById('corte-preco').textContent = corteSelecionado.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-document.getElementById('corte-tempo').textContent = corteSelecionado.tempo
-document.getElementById('corte-imagem').src = corteSelecionado.imagem
-const btnVoltarDashboard = document.querySelector('button#btn-voltar-dashboard').addEventListener('click', (evento) => {
-    window.location = '/dashboard'
-})
-
-function buscarHorarios(barbeiro, data) {
-    const duracao = corteSelecionado.tempo.split(' ')[0]
-    const grade = document.getElementById('grade-horarios')
-    fetch(`/consulta-horarios?barbeiro=${barbeiro}&data=${data}&duracao=${duracao}`, {
-        method: 'GET',
+if (document.getElementById('corte-nome')) {
+    corteSelecionado = JSON.parse(localStorage.getItem('corteSelecionado'))
+    document.getElementById('corte-nome').textContent = corteSelecionado.nome
+    document.getElementById('corte-descricao').textContent = corteSelecionado.descricao
+    document.getElementById('corte-preco').textContent = corteSelecionado.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+    document.getElementById('corte-tempo').textContent = corteSelecionado.tempo
+    document.getElementById('corte-imagem').src = corteSelecionado.imagem
+    const btnVoltarDashboard = document.querySelector('button#btn-voltar-dashboard').addEventListener('click', (evento) => {
+        window.location = '/dashboard'
     })
-    .then(resposta => resposta.json())
-    .then(dado => {
-        if (dado.erro) {
-            mostrarMensagem(respostaAgendamento, dado.erro)
-            console.log('Resposta do Backend:', dado)
-            grade.innerHTML = ''
-        } else {
-            respostaAgendamento.innerHTML = ''
-            grade.innerHTML = ''
-            dado.horarios.forEach(horario => {
-                const btn = document.createElement('button')
-                btn.textContent = horario
-                btn.onclick = () => {
-                    document.querySelectorAll('#grade-horarios button').forEach(b => {
-                        b.classList.remove('horario-selecionado')
+
+    function buscarHorarios(barbeiro, data) {
+        const duracao = corteSelecionado.tempo.split(' ')[0]
+        const grade = document.getElementById('grade-horarios')
+        fetch(`/consulta-horarios?barbeiro=${barbeiro}&data=${data}&duracao=${duracao}`, {
+            method: 'GET',
+        })
+            .then(resposta => resposta.json())
+            .then(dado => {
+                if (dado.erro) {
+                    mostrarMensagem(respostaAgendamento, dado.erro)
+                    console.log('Resposta do Backend:', dado)
+                    grade.innerHTML = ''
+                } else {
+                    respostaAgendamento.innerHTML = ''
+                    grade.innerHTML = ''
+                    dado.horarios.forEach(horario => {
+                        const btn = document.createElement('button')
+                        btn.textContent = horario
+                        btn.onclick = () => {
+                            document.querySelectorAll('#grade-horarios button').forEach(b => {
+                                b.classList.remove('horario-selecionado')
+                            })
+                            btn.classList.add('horario-selecionado')
+                            horarioSelecionado = horario // Guarda o horário escolhido
+                        }
+                        grade.appendChild(btn)
                     })
-                    btn.classList.add('horario-selecionado')
-                    horarioSelecionado = horario // Guarda o horário escolhido
+                    console.log('Resposta do Backend:', dado)
                 }
-                grade.appendChild(btn)
             })
-            console.log('Resposta do Backend:', dado)
+    }
+
+    let horarioSelecionado = null
+    document.getElementById('agendamento-data').addEventListener('change', () => {
+        const barbeiro = document.getElementById('barbeiro-select').value
+        const data = document.getElementById('agendamento-data').value
+        const duracao = corteSelecionado.tempo.split(' ')[0]
+
+        if (barbeiro && data) {
+            buscarHorarios(barbeiro, data, duracao)
+        }
+    })
+
+    const select = document.getElementById('barbeiro-select')
+    select.addEventListener('change', () => {
+        const barbeiroSelecionado = document.getElementById('barbeiro-select').value
+        const data = document.getElementById('agendamento-data').value
+
+        if (data && barbeiroSelecionado) {
+            buscarHorarios(barbeiroSelecionado, data)
+        }
+
+        const dadosBarbeiro = barbeiros[barbeiroSelecionado]
+
+        document.getElementById('barbeiro-nome').textContent = dadosBarbeiro.nome
+        document.getElementById('especialidade-corte').textContent = dadosBarbeiro.especialidade
+        document.getElementById('barbeiro-imagem').src = dadosBarbeiro.foto
+    })
+
+    const botaoConfirmar = document.getElementById('btn-confirmar-agendamento')
+    const respostaAgendamento = document.querySelector('div#erro-agendamento')
+
+    botaoConfirmar.addEventListener('click', () => {
+        const nomeCliente = document.querySelector('input#cliente-nome').value
+        const telefoneCliente = document.querySelector('input#cliente-telefone').value
+        const dataAgendamento = document.querySelector('input#agendamento-data').value
+        const observacao = document.querySelector('textarea#agendamento-observacoes').value
+
+        const nomeCorte = document.getElementById('corte-nome').textContent
+        const nomeBarbeiro = document.getElementById('barbeiro-nome').textContent
+
+
+        if (nomeCliente.length == 0 || telefoneCliente.length == 0 || dataAgendamento.length == 0 || !horarioSelecionado || nomeBarbeiro.length == 0) {
+            alert('😊 Ei! Parece que você deixou alguns campos em branco.\nPreencha tudo direitinho e tente novamente!')
+            return
+        } else {
+            const dados = {
+                nome_cliente: nomeCliente,
+                whatsapp: telefoneCliente,
+                corte_nome: nomeCorte,
+                corte_descricao: corteSelecionado.descricao,
+                tempo_corte: corteSelecionado.tempo,
+                corte_preco: corteSelecionado.preco,
+                data_hora: `${dataAgendamento} ${horarioSelecionado}:00`,
+                barbeiro: nomeBarbeiro,
+                observacao: observacao
+            }
+            console.log('Barbeiro: ', nomeBarbeiro)
+            console.log('Dados: ', dados)
+            fetch('/agendamentos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dados)
+            })
+                .then(response => response.json())
+                .then(dado => {
+                    if (dado.erro) {
+                        mostrarMensagem(respostaAgendamento, dado.erro)
+                        console.log('Resposta do Backend:', dado);
+                    } else {
+                        mostrarMensagem(respostaAgendamento, dado.mensagem)
+                        console.log('Resposta do Backend:', dado.id);
+                        window.location = `/confirmacao?id=${dado.id}`
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao salvar agendamento!');
+                });
         }
     })
 }
 
-let horarioSelecionado = null
-document.getElementById('agendamento-data').addEventListener('change', () => {
-    const barbeiro = document.getElementById('barbeiro-select').value
-    const data = document.getElementById('agendamento-data').value
-    const duracao = corteSelecionado.tempo.split(' ')[0]
-    
-    if (barbeiro && data) {
-        buscarHorarios(barbeiro, data, duracao)
-    }
+const cardResumo = document.querySelectorAll('div.card-resumo')
+cardResumo.forEach((cards) => {
+    cards.addEventListener('click', () => {
+        cards.parentElement.classList.toggle('aberto')
+        console.log('Clicou no card')
+    })
 })
-
-const select = document.getElementById('barbeiro-select')
-select.addEventListener('change', () => {
-    const barbeiroSelecionado = document.getElementById('barbeiro-select').value
-    const data = document.getElementById('agendamento-data').value
-
-    if (data && barbeiroSelecionado) {
-        buscarHorarios(barbeiroSelecionado, data)
-    }
-
-    const dadosBarbeiro = barbeiros[barbeiroSelecionado]
-
-    document.getElementById('barbeiro-nome').textContent = dadosBarbeiro.nome
-    document.getElementById('especialidade-corte').textContent = dadosBarbeiro.especialidade
-    document.getElementById('barbeiro-imagem').src = dadosBarbeiro.foto
-})
-
-const botaoConfirmar = document.getElementById('btn-confirmar-agendamento')
-const respostaAgendamento = document.querySelector('div#erro-agendamento')
-
-botaoConfirmar.addEventListener('click', () => {
-    const nomeCliente = document.querySelector('input#cliente-nome').value
-    const telefoneCliente = document.querySelector('input#cliente-telefone').value
-    const dataAgendamento = document.querySelector('input#agendamento-data').value
-    const observacao = document.querySelector('textarea#agendamento-observacoes').value
-
-    const nomeCorte = document.getElementById('corte-nome').textContent
-    const nomeBarbeiro = document.getElementById('barbeiro-nome').textContent
-
-
-    if (nomeCliente.length == 0 || telefoneCliente.length == 0 || dataAgendamento.length == 0 || !horarioSelecionado || nomeBarbeiro.length == 0) {
-        alert('😊 Ei! Parece que você deixou alguns campos em branco.\nPreencha tudo direitinho e tente novamente!')
-        return
-    } else {
-        const dados = {
-            nome_cliente: nomeCliente,
-            whatsapp: telefoneCliente,
-            corte_nome: nomeCorte,
-            corte_descricao: corteSelecionado.descricao,
-            tempo_corte: corteSelecionado.tempo,
-            corte_preco: corteSelecionado.preco,
-            data_hora: `${dataAgendamento} ${horarioSelecionado}:00`,
-            barbeiro: nomeBarbeiro,
-            observacao: observacao
-        }
-        console.log('Barbeiro: ', nomeBarbeiro)
-        console.log('Dados: ', dados)
-        fetch('/agendamentos', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(dados)
-        })
-            .then(response => response.json())
-            .then(dado => {
-                if (dado.erro) {
-                    mostrarMensagem(respostaAgendamento, dado.erro)
-                    console.log('Resposta do Backend:', dado);
-                } else {
-                    mostrarMensagem(respostaAgendamento, dado.mensagem)
-                    console.log('Resposta do Backend:', dado.id);
-                    window.location = `/confirmacao?id=${dado.id}`
-                }
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                alert('Erro ao salvar agendamento!');
-            });
-    }
-})
-
