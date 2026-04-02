@@ -3,25 +3,10 @@
 {% block content %}
 <div id="dashboard">
     <section>
-        <button onclick="window.location='/meus-agendamentos'" class="btn-voltar">
-                Ver meus agendamentos
-            </button>
         <div id="section-dashboard" class="div-section">
             <h2 class="titulo-dashboard">Estilo que faz <br><span class="destaque">a diferença</span></h2>
             <p id="tradicao">Tradição em cortes masculinos com a qualidade e sofisticação que você merece
             </p>
-            <div id="btns-navegacao">
-                <div id="btn-ver-servicos">
-                    <a href="#services-py">Ver Serviços <img
-                            src="{{ url_for('static', filename='assets/tesoura.svg') }}" alt="tesoura"
-                            loading="lazy"></a>
-                </div>
-                <div id="btn-agendar-agora">
-                    <a href="#agendarAgora"><img src="{{ url_for('static', filename='assets/phone.svg') }}"
-                            alt="telefone" loading="lazy">
-                        Agendar Agora</a>
-                </div>
-            </div>
             <div class="logo">
                 <img src="{{ url_for('static', filename='assets/solomka2002-salon-7820299.webp') }}"
                     alt="img ilustrativa" loading="lazy">
@@ -192,18 +177,14 @@
 
                         <div class="chamada-para-whatsapp">
                             <div class="heding-p-button-whatsapp">
-                                <h3 class="titulo-secundario">Pronto para transformar seu visual?</h3>
-                                <p id="agende-seu-horario">Agende seu horário agora pelo WhatsApp e garanta
-                                    um atendimento de
-                                    primeira
-                                    qualidade</p>
-                                <a id="agendarAgora"
+                                <h3 class="titulo-secundario">Dúvidas sobre cortes ou horários?</h3>
+                                <p id="agende-seu-horario">Converse com nossos barbeiros pelo WhatsApp
+                                    e receba orientações personalizadas</p>
+                                <a id="fale-conosco"
                                     href="https://wa.me/5561900000000?text=Olá%20Barbearia%20Morais!%20Vim%20pelo%20seu%20aplicativo%20e%20gostaria%20de%20agendar%20um%20atendimento.%20Qual%20é%20a%20disponibilidade%20de%20horários%20para%20as%20próximas%20datas?%20Desde%20já,%20obrigado!"
                                     target="_blank" class="btn-agendar-pelo-whatsApp"> <img
                                         src="{{ url_for('static', filename='assets/whatsapp.svg') }}"
-                                        alt="botao whatsapp" class="icone-btn-whatsapp" loading="lazy">
-                                    Agendar
-                                    pelo WhatsApp</a>
+                                        alt="botao whatsapp" class="icone-btn-whatsapp" loading="lazy">Falar com a Equipe</a>
                             </div>
                         </div>
                     </article>

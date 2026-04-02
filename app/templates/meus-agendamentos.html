@@ -5,7 +5,7 @@
     <h1 class="titulo-agendamentos">Meus Agendamentos</h1>
 
     {% if not agendamento %}
-        <p class="sem-agendamentos">Você não tem agendamentos ainda.</p>
+    <p class="sem-agendamentos">Você não tem agendamentos ainda.</p>
     {% endif %}
 
     {% for ag in agendamento %}
@@ -60,5 +60,11 @@
 
     </div>
     {% endfor %}
+    <button class="btn-voltar">
+        Voltar ao Início
+    </button>
 </div>
 {% endblock %}
+
+
+<!-- onclick="window.location='/dashboard'"  -->

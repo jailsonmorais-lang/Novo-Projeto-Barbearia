@@ -491,3 +491,44 @@ cardResumo.forEach((cards) => {
         console.log('Clicou no card')
     })
 })
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const navButtons = document.querySelectorAll('.nav-button');
+
+    navButtons.forEach(button => {
+        button.addEventListener('mouseenter', function () {
+            this.style.transform = 'scale(1.05)';
+        });
+
+        button.addEventListener('mouseleave', function () {
+            this.style.transform = 'scale(1)';
+        });
+
+        button.addEventListener('click', function () {
+            // Add click animation
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        });
+    });
+
+    // Add subtle navbar animation on scroll
+    let lastScrollY = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('.navbar');
+        const currentScrollY = window.scrollY;
+
+        if (currentScrollY > lastScrollY) {
+            navbar.style.transform = 'translateX(-50%) translateY(-10px)';
+            navbar.style.opacity = '0.8';
+        } else {
+            navbar.style.transform = 'translateX(-50%) translateY(0)';
+            navbar.style.opacity = '1';
+        }
+
+        lastScrollY = currentScrollY;
+    });
+});

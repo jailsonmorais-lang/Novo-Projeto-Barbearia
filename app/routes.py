@@ -356,8 +356,8 @@ def meus_agendamentos():
         agendamentos = '''
         SELECT * FROM agendamentos
         WHERE usuario_id = %s
-        ORDER BY data_hora DESC
-        LIMIT 5
+        ORDER BY data_hora ASC
+        LIMIT 6
         '''
         resultado = db.obter_dados(agendamentos, (id_usuario,))
         for ag in resultado:

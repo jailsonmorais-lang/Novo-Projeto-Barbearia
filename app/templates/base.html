@@ -14,10 +14,14 @@
 <body>
     <main>
         <div class="container">
+            {% if request.endpoint == 'main.pagina_dashboard' %}
+                {% include 'navbar_dashboard.html' %}
+            {% endif %}
 
             {% block content %}
+            
             {% endblock %}
-
+            
             {% if request.endpoint == 'main.pagina_dashboard' %}
                 {% include 'footer.html' %}
             {% endif %}
@@ -28,3 +32,4 @@
 </body>
 
 </html>
+
