@@ -78,7 +78,7 @@ body {
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
-    padding: 20px;
+    padding: 100px 20px 0 20px;
     background: var(--fundo-principal);
 }
 
@@ -305,6 +305,41 @@ button {
 
 #links-auxiliares p {
     font-size: 0.90rem;
+}
+
+.regras-senha {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+    position: relative;
+    left: 40px;
+}
+
+.logar:focus-within + .regras-senha {
+    opacity: 1;
+    max-height: 200px;
+    margin: 0 0 15px 0;
+    pointer-events: auto;
+}
+
+.regras-senha li::before {
+    content: '✔';
+    color: var(--roxo-principal);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+}
+
+.regras-senha ul{
+    list-style: none;
+    color: var(--text-muted);
+}
+
+.regras-senha h3 {
+    font-size: 1em;
+    color: var(--texto-secundario);
 }
 
 input::-webkit-outer-spin-button,
@@ -697,7 +732,7 @@ div.div-section-agendamentos button#btn-voltar-dashboard:active {
 /* ===== RESPONSIVO - MOBILE (até 480px) ===== */
 @media (max-width: 480px) {
     body {
-        padding: 10px;
+        padding-top: 90px;
     }
 
     .container {
@@ -1662,8 +1697,6 @@ body::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid rgba(212, 175, 55, 0.3);
-    border-radius: 50%;
     background: rgba(45, 49, 66, 0.5);
     transition: all 0.3s ease;
 }

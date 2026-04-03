@@ -19,17 +19,20 @@
             {% endif %}
 
             {% block content %}
-            
+
             {% endblock %}
-            
+
             {% if request.endpoint == 'main.pagina_dashboard' %}
                 {% include 'footer.html' %}
             {% endif %}
 
         </div>
     </main>
-    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+
+    <script src="{{ url_for('static', filename='js/components/utils.js') }}" defer></script>
+    
+    {% block scripts %}    {% endblock %}
+
 </body>
 
 </html>
-

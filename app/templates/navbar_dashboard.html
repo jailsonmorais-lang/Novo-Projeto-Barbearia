@@ -1,18 +1,3 @@
-<!-- <div id="btns-navegacao">
-    <div id="btn-ver-servicos">
-        <a href="#services-py">Ver Serviços <img src="{{ url_for('static', filename='assets/tesoura.svg') }}"
-                alt="tesoura" loading="lazy"></a>
-    </div>
-    <div id="btn-agendar-agora">
-        <a href="#agendarAgora"><img src="{{ url_for('static', filename='assets/phone.svg') }}" alt="telefone"
-                loading="lazy">
-            Agendar Agora</a>
-    </div>
-    <button class="btn-voltar" id="btn-ver-agendamentos">
-        Ver meus agendamentos
-    </button>
-</div> -->
-
 <nav class="navbar">
     <div class="nav-menu">
         <div class="brand">BarberBook</div>
@@ -81,3 +66,7 @@
         </a>
     </div>
 </nav>
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/components/navbar.js') }}"></script>
+{% endblock %}

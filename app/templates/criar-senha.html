@@ -9,7 +9,7 @@
             <div class="logar">
                 <img src="{{ url_for('static', filename='assets/password.svg') }}" alt="nova-senha" class="icone"
                     loading="lazy">
-                <input type="password" name="nova-senha" id="nova-senha" placeholder="**********" required>
+                <input type="password" name="nova-senha" id="nova-senha" placeholder="**********" autocomplete="new-password">
                 <button type="button" class="btn-mostrar-senha" id="btn-mostrar-nova-senha">
                     <img id="icone-olho-nova-senha" src="{{ url_for('static', filename='assets/olho-fechado.svg') }}"
                         alt="mostrar senha" class="icone" loading="lazy">
@@ -19,7 +19,7 @@
             <div class="logar">
                 <img src="{{ url_for('static', filename='assets/password.svg') }}" alt="nova-senha" class="icone"
                     loading="lazy">
-                <input type="password" name="confirmar-nova-senha" id="confirmar-nova-senha" placeholder="**********"
+                <input type="password" name="confirmar-nova-senha" id="confirmar-nova-senha" placeholder="**********" autocomplete="new-password"
                     required>
                 <button type="button" class="btn-mostrar-senha" id="btn-mostrar-nova-senha-confirmar">
                     <img id="icone-olho-confirmar-nova-senha"
@@ -36,4 +36,8 @@
         </form>
     </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/auth/criar-senha.js') }}" defer></script>
 {% endblock %}

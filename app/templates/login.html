@@ -29,6 +29,14 @@
                                 alt="mostrar senha" class="icone" loading="lazy">
                         </button>
                     </div>
+                    <div class="regras-senha">
+                        <ul>
+                            <h3>A senha deve conter</h3>
+                            <li>Mínimo 8 caracteres</li>
+                            <li>1 letra maiúscula</li>
+                            <li>1 caracter númerico</li>
+                        </ul>
+                    </div>
                     <div id="cadastreSe">
                         <p>Não tem conta? <a href="{{ url_for('main.pagina_cadastro') }}">Cadastre-se</a></p>
                         <a href="{{ url_for('main.pagina_recuperar_senha') }}">Esqueci a senha</a>
@@ -52,4 +60,8 @@
     </div>
 </section>
 
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/auth/login.js') }}" defer></script>
 {% endblock %}

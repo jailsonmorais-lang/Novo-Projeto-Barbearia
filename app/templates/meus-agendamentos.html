@@ -66,5 +66,6 @@
 </div>
 {% endblock %}
 
-
-<!-- onclick="window.location='/dashboard'"  -->
+{% block scripts %}
+    <script src="{{  url_for('static', filename='js/auth/meus-agendamentos.js')  }}" defer></script>
+{% endblock %}
